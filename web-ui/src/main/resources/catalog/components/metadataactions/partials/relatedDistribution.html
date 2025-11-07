@@ -211,6 +211,13 @@
     ></div>
 
     <div
+      data-ng-if="handleServers.length > 0 && canPublishHandleForResource(md)"
+      data-gn-handle-wizard="md.uuid"
+      data-gn-handle-url="r.locUrl"
+      data-xs-mode="true"
+    ></div>
+
+    <div
       data-ng-if="r.protocol !== null
                   && r.protocol.match('OGC:WMS') !== null"
       data-gn-wfs-filter-facets=""

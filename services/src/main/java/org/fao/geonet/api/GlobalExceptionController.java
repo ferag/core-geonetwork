@@ -30,6 +30,7 @@ import org.fao.geonet.api.exception.*;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.doi.client.DoiClientException;
+import org.fao.geonet.handle.HandleClientException;
 import org.fao.geonet.exceptions.ILocalizedException;
 import org.fao.geonet.exceptions.ServiceNotAllowedEx;
 import org.fao.geonet.exceptions.UserNotFoundEx;
@@ -398,7 +399,8 @@ public class GlobalExceptionController {
         XSDValidationErrorEx.class,
         JSONException.class,
         MultipartException.class,
-        DoiClientException.class
+        DoiClientException.class,
+        HandleClientException.class
     })
     public ApiError unsatisfiedParameterHandler(final Exception exception, final HttpServletRequest request) {
         storeApiErrorCause(exception);

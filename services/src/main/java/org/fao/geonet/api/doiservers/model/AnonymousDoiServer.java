@@ -37,6 +37,7 @@ public class AnonymousDoiServer extends DoiServerDto {
             .setPattern(doiServer.getPattern())
             .setPublicUrl(doiServer.getPublicUrl())
             .setPrefix(doiServer.getPrefix())
+            .setType(doiServer.getType())
             .setPublicationGroups(doiServer.getPublicationGroups());
     }
 

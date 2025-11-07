@@ -30,6 +30,8 @@
   goog.require("gn_wms");
   goog.require("gn_wmts");
   goog.require("gn_external_viewer");
+  goog.require("gn_doi_service");
+  goog.require("gn_handle_service");
 
   var module = angular.module("gn_related_directive", [
     "gn_relatedresources_service",
@@ -326,6 +328,7 @@
     "gnConfigService",
     "gnUrlUtils",
     "gnDoiService",
+    "gnHandleService",
     "$injector",
     function (
       gnGlobalSettings,
@@ -335,6 +338,7 @@
       gnConfigService,
       gnUrlUtils,
       gnDoiService,
+      gnHandleService,
       $injector
     ) {
       return {
@@ -364,6 +368,8 @@
         },
         link: function (scope, element, attrs) {
           scope.canPublishDoiForResource = gnDoiService.canPublishDoiForResource;
+          scope.canPublishHandleForResource =
+            gnHandleService.canPublishHandleForResource;
           scope.editable = angular.isDefined(scope.editorConfig);
           scope.lang = scope.lang || scope.$parent.lang;
 

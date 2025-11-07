@@ -27,10 +27,12 @@
   goog.require("gn_history_directive");
   goog.require("gn_history_service");
   goog.require("gn_doi");
+  goog.require("gn_handle");
 
   var module = angular.module("gn_history", [
     "gn_history_directive",
     "gn_history_service",
-    "gn_doi"
+    "gn_doi",
+    "gn_handle"
   ]);
 })();

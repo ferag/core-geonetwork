@@ -1,0 +1,3 @@
+ALTER TABLE Doiservers ADD COLUMN type VARCHAR(16);
+UPDATE Doiservers SET type = 'DOI' WHERE type IS NULL;
+ALTER TABLE Doiservers ALTER COLUMN type SET NOT NULL;

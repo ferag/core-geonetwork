@@ -44,6 +44,10 @@
       $scope.isUpdate = null;
       $scope.selectedRecordGroups = [];
       $scope.recordGroups = [];
+      $scope.serverTypes = [
+        { value: "DOI", label: "doiserver-type-doi" },
+        { value: "HANDLE", label: "doiserver-type-handle" }
+      ];
 
       // Load groups
       function loadGroups() {
@@ -98,7 +102,7 @@
 
         $scope.isUpdate = true;
         $scope.doiServerUpdated = false;
-        $scope.doiServerSelected = v;
+        $scope.doiServerSelected = angular.extend({ type: "DOI" }, v);
         $scope.selectedRecordGroups = [];
 
         for (var i = 0; i < v.publicationGroups.length; i++) {
@@ -126,7 +130,8 @@
           publicUrl: "",
           pattern: "{{uuid}}",
           prefix: "",
-          publicationGroups: []
+          publicationGroups: [],
+          type: "DOI"
         };
       };
       $scope.saveDoiServer = function () {
