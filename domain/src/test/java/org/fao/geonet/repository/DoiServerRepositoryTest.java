@@ -24,6 +24,7 @@
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.DoiServer;
+import org.fao.geonet.domain.DoiServerType;
 import org.fao.geonet.domain.Group;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.hibernate5.encryptor.HibernatePBEEncryptorRegistry;
@@ -70,7 +71,8 @@ public class DoiServerRepositoryTest extends AbstractSpringDataTest {
             .setLandingPageTemplate("http://landingpage" + id)
             .setPublicUrl("http://publicurl" + id)
             .setPattern("pattern" + id)
-            .setPrefix("prefix" + id);
+            .setPrefix("prefix" + id)
+            .setType(DoiServerType.DOI);
     }
 
     @Test

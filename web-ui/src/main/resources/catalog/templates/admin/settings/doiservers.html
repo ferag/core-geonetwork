@@ -138,6 +138,24 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="control-label col-sm-3" data-translate=""
+              >doiserver-type</label
+            >
+
+            <div class="col-sm-9">
+              <select
+                class="form-control"
+                name="type"
+                data-ng-model="doiServerSelected.type"
+                data-ng-options="type.value as (type.label | translate) for type in serverTypes"
+                required
+              ></select>
+
+              <p class="help-block" data-translate="">doiserver-type-help</p>
+            </div>
+          </div>
+
           <div
             class="form-group"
             data-ng-class="gnDoiServerEdit.url.$error.required ||
@@ -159,42 +177,44 @@
                   placeholder="http://"
                 />
                 <div class="input-group-btn">
-                  <button
-                    type="button"
-                    class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-fw fa-th-list"></i>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <li>
-                      <a
-                        data-ng-click="updateDoiServerUrl('https://mds.datacite.org', '')"
-                        title="{{'doiserver-defaultApiText' | translate}}"
-                        data-translate=""
-                        >doiserver-defaultApiText</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        data-ng-click="updateDoiServerUrl('https://mds.test.datacite.org', 'https://mds.test.datacite.org/doi')"
-                        title="{{'doiserver-testApiText' | translate}}"
-                        data-translate=""
-                        >doiserver-testApiText</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        data-ng-click="updateDoiServerUrl('https://ra.publications.europa.eu/servlet/ws/doidata?api=medra.org', '')"
-                        title="{{'doiserver-euApiText' | translate}}"
-                        data-translate=""
-                        >doiserver-euApiText</a
-                      >
-                    </li>
-                  </ul>
+                  <div data-ng-if="doiServerSelected.type === 'DOI'">
+                    <button
+                      type="button"
+                      class="btn btn-default dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="fa fa-fw fa-th-list"></i>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li>
+                        <a
+                          data-ng-click="updateDoiServerUrl('https://mds.datacite.org', '')"
+                          title="{{'doiserver-defaultApiText' | translate}}"
+                          data-translate=""
+                          >doiserver-defaultApiText</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          data-ng-click="updateDoiServerUrl('https://mds.test.datacite.org', 'https://mds.test.datacite.org/doi')"
+                          title="{{'doiserver-testApiText' | translate}}"
+                          data-translate=""
+                          >doiserver-testApiText</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          data-ng-click="updateDoiServerUrl('https://ra.publications.europa.eu/servlet/ws/doidata?api=medra.org', '')"
+                          title="{{'doiserver-euApiText' | translate}}"
+                          data-translate=""
+                          >doiserver-euApiText</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 

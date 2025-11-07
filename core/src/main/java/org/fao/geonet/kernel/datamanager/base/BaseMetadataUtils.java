@@ -413,6 +413,15 @@ public class BaseMetadataUtils implements IMetadataUtils {
     }
 
     @Override
+    public String getHandle(String uuid) throws ResourceNotFoundException, IOException, JDOMException {
+        AbstractMetadata metadata = findOneByUuid(uuid);
+        final MetadataSchema schema = metadataSchemaUtils
+            .getSchema(metadata.getDataInfo().getSchemaId());
+        Element xml = metadata.getXmlData(false);
+        return schema.queryString(SavedQuery.HANDLE_GET, xml);
+    }
+
+    @Override
     public String getResourceIdentifier(String uuid) throws ResourceNotFoundException, JDOMException, IOException {
         AbstractMetadata metadata = findOneByUuid(uuid);
         final MetadataSchema schema = metadataSchemaUtils

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * Copyright (C) 2001-2024 Food and Agriculture Organization of the
  * United Nations (FAO-UN), United Nations World Food Programme (WFP)
  * and United Nations Environment Programme (UNEP)
  *
@@ -22,19 +22,10 @@
  */
 
 (function () {
-  goog.provide("gn_onlinesrc");
+  goog.provide("gn_handle");
 
-  goog.require("gn_filestore");
-  goog.require("gn_onlinesrc_directive");
-  goog.require("gn_onlinesrc_service");
-  goog.require("gn_doi");
-  goog.require("gn_handle");
+  goog.require("gn_handle_directive");
+  goog.require("gn_handle_service");
 
-  angular.module("gn_onlinesrc", [
-    "gn_onlinesrc_service",
-    "gn_onlinesrc_directive",
-    "gn_filestore",
-    "gn_doi",
-    "gn_handle"
-  ]);
+  angular.module("gn_handle", ["gn_handle_directive", "gn_handle_service"]);
 })();

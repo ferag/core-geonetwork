@@ -29,6 +29,8 @@
   goog.require("gn_filestore");
   goog.require("gn_urlutils_service");
   goog.require("gn_related_directive");
+  goog.require("gn_doi_service");
+  goog.require("gn_handle_service");
 
   var fileUploaderList = [
     "gnOnlinesrc",
@@ -569,6 +571,7 @@
       "$filter",
       "gnConfig",
       "gnDoiService",
+      "gnHandleService",
       function (
         gnOnlinesrc,
         gnCurrentEdit,
@@ -576,7 +579,8 @@
         gnConfigService,
         $filter,
         gnConfig,
-        gnDoiService
+        gnDoiService,
+        gnHandleService
       ) {
         return {
           restrict: "A",
@@ -602,6 +606,12 @@
               scope.gnCurrentEdit.metadata
             );
             scope.canPublishDoiForResource = gnDoiService.canPublishDoiForResource;
+            scope.isHandleApplicableForMetadata =
+              gnHandleService.isHandleApplicableForMetadata(
+                scope.gnCurrentEdit.metadata
+              );
+            scope.canPublishHandleForResource =
+              gnHandleService.canPublishHandleForResource;
 
             /**
              * Calls service 'relations.get' to load

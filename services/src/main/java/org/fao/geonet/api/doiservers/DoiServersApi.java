@@ -33,6 +33,7 @@ import org.fao.geonet.api.doiservers.model.DoiServerDto;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.domain.DoiServer;
+import org.fao.geonet.domain.DoiServerType;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.repository.DoiServerRepository;
 import org.springframework.http.HttpStatus;
@@ -82,10 +83,11 @@ public class DoiServersApi {
         @ApiResponse(responseCode = "200", description = "List of all DOI servers."),
         @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_ADMIN)
     })
-    List<AnonymousDoiServer> getDoiServers() {
-        List<DoiServer> doiServers = doiServerRepository.findAll();
+    List<AnonymousDoiServer> getDoiServers(
+        @RequestParam(value = "type", required = false) DoiServerType serverType) {
+        List<DoiServer> doiServers = findServersByType(serverType);
         List<AnonymousDoiServer> list = new ArrayList<>(doiServers.size());
-        doiServers.stream().forEach(e -> list.add(new AnonymousDoiServer(DoiServerDto.from(e))));
+        doiServers.forEach(e -> list.add(new AnonymousDoiServer(DoiServerDto.from(e))));
         return list;
     }
 
@@ -108,9 +110,11 @@ public class DoiServersApi {
         @Parameter(description = "Metadata UUID",
             required = true,
             example = "")
-        @PathVariable Integer metadataId) {
+        @PathVariable Integer metadataId,
+        @RequestParam(value = "type", required = false) DoiServerType serverType) {
 
-        List<DoiServer> doiServers = doiServerRepository.findAll();
+        DoiServerType effectiveType = serverType == null ? DoiServerType.DOI : serverType;
+        List<DoiServer> doiServers = findServersByType(effectiveType);
         List<AnonymousDoiServer> list = new ArrayList<>(doiServers.size());
 
         AbstractMetadata metadata = metadataUtils.findOne(metadataId);
@@ -136,6 +140,15 @@ public class DoiServersApi {
         Collections.sort(list, Comparator.comparing(DoiServerDto::getName));
 
         return list;
+    }
+
+    private List<DoiServer> findServersByType(DoiServerType type) {
+        if (type == null) {
+            return doiServerRepository.findAll();
+        }
+        return doiServerRepository.findAll().stream()
+            .filter(server -> server.getType() == type)
+            .collect(Collectors.toList());
     }
 
     @io.swagger.v3.oas.annotations.Operation(

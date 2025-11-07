@@ -34,4 +34,7 @@
   <bean id="doiManager"
         class="org.fao.geonet.doi.client.DoiManager"
         lazy-init="true"/>
+  <bean id="handleManager"
+        class="org.fao.geonet.handle.HandleManager"
+        lazy-init="true"/>
 </beans>

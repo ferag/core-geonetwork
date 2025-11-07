@@ -157,6 +157,7 @@
           scope.hasVisibletasks = false;
 
           scope.doiServers = [];
+          scope.handleServers = [];
 
           gnConfigService.load().then(function (c) {
             scope.isMdWorkflowEnable = gnConfig["metadata.workflow.enable"];
@@ -400,6 +401,11 @@
                 .get("../api/doiservers/metadata/" + scope.md.id)
                 .then(function (response) {
                   scope.doiServers = response.data;
+                });
+              $http
+                .get("../api/doiservers/metadata/" + scope.md.id + "?type=HANDLE")
+                .then(function (response) {
+                  scope.handleServers = response.data;
                 });
               if (scope.md.groupOwner) {
                 // Load the group owner name when the metadata record changes

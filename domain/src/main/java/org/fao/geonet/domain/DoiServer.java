@@ -49,6 +49,7 @@ public class DoiServer extends GeonetEntity {
     private String publicUrl;
     private String pattern = "{{uuid}}";
     private String prefix;
+    private DoiServerType type = DoiServerType.DOI;
     private Set<Group> publicationGroups = new HashSet<>();
 
     /**
@@ -280,5 +281,16 @@ public class DoiServer extends GeonetEntity {
         inverseJoinColumns = @JoinColumn(name = "group_id"))
     public Set<Group> getPublicationGroups() {
         return publicationGroups;
+    }
+
+    public DoiServer setType(DoiServerType type) {
+        this.type = type == null ? DoiServerType.DOI : type;
+        return this;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 16)
+    public DoiServerType getType() {
+        return type;
     }
 }

@@ -105,6 +105,22 @@ public class DoiServersApiTest extends AbstractServiceIntegrationTest {
     }
 
     @Test
+    public void getHandleServersByType() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        this.mockHttpSession = loginAsAdmin();
+
+        this.mockMvc.perform(get("/srv/api/doiservers")
+                .param("type", DoiServerType.HANDLE.name())
+                .session(this.mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].type", is(DoiServerType.HANDLE.name())))
+            .andExpect(content().contentType(API_JSON_EXPECTED_ENCODING));
+    }
+
+    @Test
     public void getDoiServer() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
@@ -272,10 +288,12 @@ public class DoiServersApiTest extends AbstractServiceIntegrationTest {
         groupRepository.save(group1);
 
         DoiServer doiServer1 = DoiServerRepositoryTest.newDoiServer(inc);
+        doiServer1.setType(DoiServerType.DOI);
         doiServer1.getPublicationGroups().add(group1);
         doiServerRepository.save(doiServer1);
 
         DoiServer doiServer2 = DoiServerRepositoryTest.newDoiServer(inc);
+        doiServer2.setType(DoiServerType.HANDLE);
         doiServerRepository.save(doiServer2);
     }
 }

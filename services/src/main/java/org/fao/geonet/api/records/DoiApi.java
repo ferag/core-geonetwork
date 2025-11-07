@@ -36,6 +36,7 @@ import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.doi.client.DoiManager;
 import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.domain.DoiServer;
+import org.fao.geonet.domain.DoiServerType;
 import org.fao.geonet.repository.DoiServerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -232,7 +233,7 @@ public class DoiApi {
 
     private DoiServer retrieveDoiServer(Integer doiServerId) throws ResourceNotFoundException {
         Optional<DoiServer> doiServerOpt = doiServerRepository.findOneById(doiServerId);
-        if (doiServerOpt.isEmpty()) {
+        if (doiServerOpt.isEmpty() || doiServerOpt.get().getType() != DoiServerType.DOI) {
             throw new ResourceNotFoundException(String.format(
                 MSG_DOISERVER_WITH_ID_NOT_FOUND,
                 doiServerId

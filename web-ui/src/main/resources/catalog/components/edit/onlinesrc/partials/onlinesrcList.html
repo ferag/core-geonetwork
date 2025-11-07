@@ -190,6 +190,13 @@
                 ></div>
 
                 <div
+                  data-ng-if="isHandleApplicableForMetadata && canPublishHandleForResource(gnCurrentEdit.metadata)"
+                  data-gn-handle-wizard="gnCurrentEdit.uuid"
+                  data-gn-handle-url="resource.lUrl"
+                  data-xs-mode="true"
+                ></div>
+
+                <div
                   data-ng-if="resource.protocol !== null
                                  && resource.protocol.match('OGC:WMS') !== null"
                   data-gn-wfs-filter-facets=""

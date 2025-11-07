@@ -25,6 +25,7 @@ package org.fao.geonet.api.doiservers.model;
 
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.domain.DoiServer;
+import org.fao.geonet.domain.DoiServerType;
 import org.fao.geonet.domain.Group;
 import org.fao.geonet.repository.GroupRepository;
 
@@ -45,6 +46,7 @@ public class DoiServerDto {
     private String pattern = "{{uuid}}";
     private String prefix;
     private Set<Integer> publicationGroups = new HashSet<>();
+    private DoiServerType type = DoiServerType.DOI;
 
 
     public int getId() {
@@ -137,6 +139,15 @@ public class DoiServerDto {
         return this;
     }
 
+    public DoiServerType getType() {
+        return type;
+    }
+
+    public DoiServerDto setType(DoiServerType type) {
+        this.type = type == null ? DoiServerType.DOI : type;
+        return this;
+    }
+
     public Set<Integer> getPublicationGroups() {
         return publicationGroups;
     }
@@ -159,6 +170,7 @@ public class DoiServerDto {
         doiServerDto.setLandingPageTemplate(doiServer.getLandingPageTemplate());
         doiServerDto.setPublicUrl(doiServer.getPublicUrl());
         doiServerDto.setPrefix(doiServer.getPrefix());
+        doiServerDto.setType(doiServer.getType());
         doiServerDto.setPublicationGroups(doiServer.getPublicationGroups().stream().map(Group::getId).collect(Collectors.toSet()));
 
         return doiServerDto;
@@ -177,6 +189,7 @@ public class DoiServerDto {
         doiServer.setLandingPageTemplate(getLandingPageTemplate());
         doiServer.setPublicUrl(getPublicUrl());
         doiServer.setPrefix(getPrefix());
+        doiServer.setType(getType());
 
         GroupRepository groupRepository = ApplicationContextHolder.get().getBean(GroupRepository.class);
         Set<Group> groups = new HashSet<>();
