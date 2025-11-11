@@ -72,36 +72,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>com.hubspot.maven.plugins</groupId>
-        <artifactId>prettier-maven-plugin</artifactId>
-        <version>0.16</version>
-        <configuration>
-          <prettierJavaVersion>1.5.0</prettierJavaVersion>
-          <printWidth>90</printWidth>
-          <tabWidth>2</tabWidth>
-          <useTabs>false</useTabs>
-          <ignoreConfigFile>false</ignoreConfigFile>
-          <ignoreEditorConfig>true</ignoreEditorConfig>
-          <inputGlobs>
-            <inputGlob>src/main/resources/catalog/style/**/*.less</inputGlob>
-            <inputGlob>src/main/resources/catalog/components/**/*.js</inputGlob>
-            <inputGlob>src/main/resources/catalog/components/**/*.html</inputGlob>
-            <inputGlob>src/main/resources/catalog/js/**/*.js</inputGlob>
-            <inputGlob>src/main/resources/catalog/templates/**/*.html</inputGlob>
-            <inputGlob>src/main/resources/catalog/views/**/*.js</inputGlob>
-            <inputGlob>src/main/resources/catalog/views/**/*.html</inputGlob>
-          </inputGlobs>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>write</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <properties>
@@ -109,4 +79,48 @@
     </geonetwork.build.dir>
     <closure.compile.level/>
   </properties>
+  <profiles>
+    <profile>
+      <id>with-prettier</id>
+      <activation>
+        <property>
+          <name>runPrettier</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.hubspot.maven.plugins</groupId>
+            <artifactId>prettier-maven-plugin</artifactId>
+            <version>0.16</version>
+            <configuration>
+              <prettierJavaVersion>1.5.0</prettierJavaVersion>
+              <printWidth>90</printWidth>
+              <tabWidth>2</tabWidth>
+              <useTabs>false</useTabs>
+              <ignoreConfigFile>false</ignoreConfigFile>
+              <ignoreEditorConfig>true</ignoreEditorConfig>
+              <inputGlobs>
+                <inputGlob>src/main/resources/catalog/style/**/*.less</inputGlob>
+                <inputGlob>src/main/resources/catalog/components/**/*.js</inputGlob>
+                <inputGlob>src/main/resources/catalog/components/**/*.html</inputGlob>
+                <inputGlob>src/main/resources/catalog/js/**/*.js</inputGlob>
+                <inputGlob>src/main/resources/catalog/templates/**/*.html</inputGlob>
+                <inputGlob>src/main/resources/catalog/views/**/*.js</inputGlob>
+                <inputGlob>src/main/resources/catalog/views/**/*.html</inputGlob>
+              </inputGlobs>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>validate</phase>
+                <goals>
+                  <goal>write</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

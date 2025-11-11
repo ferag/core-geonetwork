@@ -256,25 +256,6 @@
     <plugins>
       <!-- build enviornment -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>3.8.3</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>11</source>
@@ -301,22 +282,6 @@
       </plugin>
 
       <!-- run integration tests after unit tests -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <id>get-cpu-count</id>
-            <goals>
-              <goal>cpu-count</goal>
-            </goals>
-            <configuration>
-              <cpuCount>system.numCores</cpuCount>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -1383,15 +1348,21 @@
       <name>oss.sonatype.org - github-releases</name>
       <id>oss.sonatype.org-github-releases</id>
       <url>https://oss.sonatype.org/content/repositories/github-releases</url>
+      <releases>
+        <enabled>${github.releases.plugin.repo.enabled}</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </pluginRepository>
     <pluginRepository>
       <id>sonatype-public-repository</id>
       <url>https://oss.sonatype.org/content/groups/public</url>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>${sonatype.public.plugin.repo.enabled}</enabled>
       </snapshots>
       <releases>
-        <enabled>true</enabled>
+        <enabled>${sonatype.public.plugin.repo.enabled}</enabled>
       </releases>
     </pluginRepository>
   </pluginRepositories>
@@ -1429,6 +1400,65 @@
   </modules>
 
   <profiles>
+    <profile>
+      <id>enforce-maven-version</id>
+      <activation>
+        <property>
+          <name>enforceMavenVersion</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-maven</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireMavenVersion>
+                      <version>3.8.3</version>
+                    </requireMavenVersion>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>with-build-helper</id>
+      <activation>
+        <property>
+          <name>enableBuildHelper</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+              <execution>
+                <id>get-cpu-count</id>
+                <goals>
+                  <goal>cpu-count</goal>
+                </goals>
+                <configuration>
+                  <cpuCount>system.numCores</cpuCount>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>with-doc</id>
       <modules>
@@ -1531,6 +1561,11 @@
   </distributionManagement>
 
   <properties>
+    <!-- Disable access to oss.sonatype.org github releases by default because it requires
+         authentication in some environments. The repository can be enabled by setting
+         -Dgithub.releases.plugin.repo.enabled=true when needed. -->
+    <github.releases.plugin.repo.enabled>false</github.releases.plugin.repo.enabled>
+    <sonatype.public.plugin.repo.enabled>false</sonatype.public.plugin.repo.enabled>
     <db.properties>WEB-INF/config-db/jdbc.properties</db.properties>
     <!--<db.properties>file:/${geonetwork.dir}/jdbc.properties</db.properties>-->
 
