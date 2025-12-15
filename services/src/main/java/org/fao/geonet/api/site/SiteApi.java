@@ -354,10 +354,11 @@ public class SiteApi {
         )
             String[] key,
         @Parameter(hidden = true)
-            HttpSession httpSession
+        HttpSession httpSession
     ) throws Exception {
         UserSession session = ApiUtils.getUserSession(httpSession);
         Profile profile = session == null ? null : session.getProfile();
+        settingManager.ensureHandleSettingsPresent();
 
         List<String> settingList = new ArrayList<>();
         if (set == null && key == null) {
