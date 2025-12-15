@@ -643,6 +643,8 @@
     "system/publication/doi/doikey-help": "Usually looks like 10.xxxx. You will be allowed to register DOI names only under the prefixes that have been assigned to you.",
     "system/publication/doi/doilandingpagetemplate": "DOI landing page URL template",
     "system/publication/doi/doilandingpagetemplate-help": "The URL to use to register the DOI. A good default for GeoNetwork is http://localhost:8080/geonetwork/srv/resources/records/\\{\\{uuid\\}\\}. The landing page URL MUST contains the UUID of the record.",
+    "system/publication/handle/handleenabled": "Allow creation of Handle PID",
+    "system/publication/handle/handleenabled-help": "Enable registration of Handle persistent identifiers (PID) for records using the configured Handle service.",
     "system/publication/handle/url": "Handle API endpoint",
     "system/publication/handle/url-help": "Base URL of the Handle REST service used to register or update identifiers.",
     "system/publication/handle/prefix": "Handle prefix",

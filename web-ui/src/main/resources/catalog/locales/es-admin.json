@@ -637,6 +637,8 @@
     "system/publication/doi/doikey-help": "Normalmente algo como 10.xxxx. Se te permitirá registrar nombres DOI bajo los prefijos que se te han asignado.",
     "system/publication/doi/doilandingpagetemplate": "Plantilla para la página de bienvenida de DOI",
     "system/publication/doi/doilandingpagetemplate-help": "La URL para registrar el DOI. Una buena URL por defecto para GeoNetwork es http://localhost:8080/geonetwork/srv/resources/records/\\{\\{uuid\\}\\}. La URL de la página de entrada TIENE que contener el UUID del registro.",
+    "system/publication/handle/handleenabled": "Permitir la creación de Handle PID",
+    "system/publication/handle/handleenabled-help": "Activa el registro de identificadores persistentes Handle (PID) para los registros usando el servicio Handle configurado.",
     "system/publication/handle/url": "Endpoint API de Handle",
     "system/publication/handle/url-help": "URL base del servicio REST de Handle utilizado para registrar o actualizar identificadores.",
     "system/publication/handle/prefix": "Prefijo de Handle",

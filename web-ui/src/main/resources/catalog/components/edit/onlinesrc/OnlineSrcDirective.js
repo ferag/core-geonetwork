@@ -433,6 +433,7 @@
               scope.gnCurrentEdit.metadata.isPublished() &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             scope.isHandleApplicableForMetadata =
+              gnConfig["system.publication.handle.handleenabled"] &&
               !!gnConfig["system.publication.handle.url"] &&
               !!gnConfig["system.publication.handle.prefix"] &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&

@@ -37,6 +37,14 @@ public class HandleManager {
             return;
         }
 
+        boolean handleEnabled = Boolean.parseBoolean(
+            settingManager.getValue(HandleSettings.SETTING_PUBLICATION_HANDLE_ENABLED)
+        );
+        if (!handleEnabled) {
+            Log.warning(LOGGER_NAME, "Handle configuration is disabled. Enable Handle PIDs in System Configuration.");
+            return;
+        }
+
         String apiUrl = settingManager.getValue(HandleSettings.SETTING_PUBLICATION_HANDLE_URL);
         prefix = settingManager.getValue(HandleSettings.SETTING_PUBLICATION_HANDLE_PREFIX);
         String username = settingManager.getValue(HandleSettings.SETTING_PUBLICATION_HANDLE_USERNAME);
