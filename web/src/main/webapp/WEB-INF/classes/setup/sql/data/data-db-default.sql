@@ -742,12 +742,12 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/doi/doilandingpagetemplate', 'http://localhost:8080/geonetwork/srv/resources/records/{{uuid}}', 0, 100195, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/doi/doipublicurl', '', 0, 100196, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/doi/doipattern', '{{uuid}}', 0, 100197, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/handle/handleenabled', 'false', 2, 100198, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/handle/url', '', 0, 100199, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/handle/prefix', '', 0, 100200, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/handle/username', '', 0, 100201, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal, encrypted) VALUES ('system/publication/handle/password', '', 0, 100202, 'y', 'y');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/publication/handle/adminPermissions', '', 0, 100203, 'n');
+INSERT INTO Settings (name, value, datatype, position, internal, editable) VALUES ('system/publication/handle/handleenabled', 'false', 2, 100198, 'n', 'y');
+INSERT INTO Settings (name, value, datatype, position, internal, editable) VALUES ('system/publication/handle/url', '', 0, 100199, 'n', 'y');
+INSERT INTO Settings (name, value, datatype, position, internal, editable) VALUES ('system/publication/handle/prefix', '', 0, 100200, 'n', 'y');
+INSERT INTO Settings (name, value, datatype, position, internal, editable) VALUES ('system/publication/handle/username', '', 0, 100201, 'n', 'y');
+INSERT INTO Settings (name, value, datatype, position, internal, editable, encrypted) VALUES ('system/publication/handle/password', '', 0, 100202, 'y', 'y', 'y');
+INSERT INTO Settings (name, value, datatype, position, internal, editable) VALUES ('system/publication/handle/adminPermissions', '', 0, 100203, 'n', 'y');
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/security/passwordEnforcement/minLength', '6', 1, 12000, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/security/passwordEnforcement/maxLength', '20', 1, 12001, 'n');

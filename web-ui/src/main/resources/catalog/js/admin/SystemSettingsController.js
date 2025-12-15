@@ -52,7 +52,7 @@
     return function (input) {
       var filtered = [];
       angular.forEach(input, function (el) {
-        if (el.editable === true) {
+        if (el.editable !== false) {
           filtered.push(el);
         }
       });

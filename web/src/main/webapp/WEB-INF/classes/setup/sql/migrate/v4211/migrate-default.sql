@@ -14,3 +14,5 @@ INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct
 INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/publication/handle/username', '', 0, 100201, 'n' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/publication/handle/username');
 INSERT INTO Settings (name, value, datatype, position, internal, encrypted) SELECT distinct 'system/publication/handle/password', '', 0, 100202, 'y', 'y' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/publication/handle/password');
 INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/publication/handle/adminPermissions', '', 0, 100203, 'n' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/publication/handle/adminPermissions');
+
+UPDATE Settings SET editable='y' WHERE name LIKE 'system/publication/handle/%' AND (editable IS NULL OR editable='');
