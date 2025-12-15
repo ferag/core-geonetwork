@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jeeves.services.ReadWriteController;
-import org.fao.geonet.api.API;
-import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.handle.client.HandleClientException;
 import org.fao.geonet.handle.client.HandleManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,6 @@ public class HandleApi {
     })
     @ResponseBody
     public ResponseEntity<Void> assignHandle(
-        @PathVariable(value = API.PORTAL_PARAMETER, required = false) final String portalName,
         @PathVariable(value = API_PARAM_RECORD_UUID) String uuid,
         @RequestBody Map<String, Object> body) throws HandleClientException {
 
