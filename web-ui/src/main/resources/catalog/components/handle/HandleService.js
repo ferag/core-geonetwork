@@ -22,19 +22,24 @@
  */
 
 (function () {
-  goog.provide("gn_onlinesrc");
+  goog.provide("gn_handle_service");
 
-  goog.require("gn_filestore");
-  goog.require("gn_onlinesrc_directive");
-  goog.require("gn_onlinesrc_service");
-  goog.require("gn_doi");
-  goog.require("gn_handle");
+  var module = angular.module("gn_handle_service", []);
 
-  angular.module("gn_onlinesrc", [
-    "gn_onlinesrc_service",
-    "gn_onlinesrc_directive",
-    "gn_filestore",
-    "gn_doi",
-    "gn_handle"
+  /**
+   * Service to deal with Handle PID assignment.
+   */
+  module.service("gnHandleService", [
+    "$http",
+    function ($http) {
+      return {
+        assign: function (id, url, includeAdmin) {
+          return $http.put("../api/records/" + id + "/handle", {
+            url: url,
+            includeAdmin: includeAdmin
+          });
+        }
+      };
+    }
   ]);
 })();

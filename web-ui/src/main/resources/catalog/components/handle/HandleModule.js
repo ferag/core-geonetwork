@@ -22,19 +22,10 @@
  */
 
 (function () {
-  goog.provide("gn_onlinesrc");
+  goog.provide("gn_handle");
 
-  goog.require("gn_filestore");
-  goog.require("gn_onlinesrc_directive");
-  goog.require("gn_onlinesrc_service");
-  goog.require("gn_doi");
-  goog.require("gn_handle");
+  goog.require("gn_handle_directive");
+  goog.require("gn_handle_service");
 
-  angular.module("gn_onlinesrc", [
-    "gn_onlinesrc_service",
-    "gn_onlinesrc_directive",
-    "gn_filestore",
-    "gn_doi",
-    "gn_handle"
-  ]);
+  angular.module("gn_handle", ["gn_handle_directive", "gn_handle_service"]);
 })();
