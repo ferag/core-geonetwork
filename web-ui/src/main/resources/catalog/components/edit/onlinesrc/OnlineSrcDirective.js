@@ -479,16 +479,14 @@
               );
             };
 
-            scope.handleMetadataLink = scope.handleMetadataLink || buildHandleUrl();
+            scope.handleMetadataLink = buildHandleUrl();
 
             scope.$watch(
               function () {
                 return scope.gnCurrentEdit.uuid;
               },
-              function (uuid) {
-                if (uuid && !scope.handleMetadataLink) {
-                  scope.handleMetadataLink = buildHandleUrl();
-                }
+              function () {
+                scope.handleMetadataLink = buildHandleUrl();
               }
             );
 
@@ -496,10 +494,8 @@
               function () {
                 return scope.gnCurrentEdit.id;
               },
-              function (id) {
-                if (id && !scope.handleMetadataLink) {
-                  scope.handleMetadataLink = buildHandleUrl();
-                }
+              function () {
+                scope.handleMetadataLink = buildHandleUrl();
               }
             );
 
