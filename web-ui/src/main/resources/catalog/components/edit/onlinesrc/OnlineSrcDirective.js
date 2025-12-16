@@ -422,7 +422,10 @@
             scope.lang = scope.$parent.lang;
             scope.readonly = attrs["readonly"] || false;
             scope.gnCurrentEdit.associatedPanelConfigId = attrs["configId"] || "default";
-            scope.relations = [];
+            scope.relations = {
+              onlines: [],
+              thumbnails: []
+            };
             scope.gnCurrentEdit.codelistFilter = attrs["codelistFilter"];
             scope.isMdWorkflowEnableForMetadata =
               gnConfig["metadata.workflow.enable"] &&
@@ -438,7 +441,20 @@
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             scope.handleMetadataLink =
               scope.handleMetadataLink ||
-              "../api/records/" + scope.gnCurrentEdit.uuid;
+              (scope.gnCurrentEdit.uuid
+                ? "../api/records/" + scope.gnCurrentEdit.uuid
+                : undefined);
+
+            scope.$watch(
+              function () {
+                return scope.gnCurrentEdit.uuid;
+              },
+              function (uuid) {
+                if (uuid && !scope.handleMetadataLink) {
+                  scope.handleMetadataLink = "../api/records/" + uuid;
+                }
+              }
+            );
 
             /**
              * Calls service 'relations.get' to load
@@ -446,15 +462,20 @@
              * metadata into the list
              */
             var loadRelations = function () {
-              gnOnlinesrc.getAllResources().then(function (data) {
-                var res = gnOnlinesrc.formatResources(
-                  data,
-                  scope.lang,
-                  gnCurrentEdit.mdLanguage
-                );
-                scope.relations = res.relations;
-                scope.siblingTypes = scope.siblingTypes;
-              });
+              gnOnlinesrc.getAllResources().then(
+                function (data) {
+                  var res = gnOnlinesrc.formatResources(
+                    data,
+                    scope.lang,
+                    gnCurrentEdit.mdLanguage
+                  );
+                  scope.relations = res.relations;
+                  scope.siblingTypes = scope.siblingTypes;
+                },
+                function () {
+                  scope.relations = scope.relations || { onlines: [], thumbnails: [] };
+                }
+              );
             };
             scope.isCategoryEnable = function (category) {
               return angular.isUndefined(scope.types)
