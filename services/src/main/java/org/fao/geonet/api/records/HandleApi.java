@@ -62,7 +62,8 @@ public class HandleApi {
 
         AbstractMetadata metadata = ApiUtils.canEditRecord(uuid, request);
         ServiceContext context = ApiUtils.createServiceContext(request);
-        String targetUrl = body.getOrDefault("url", "").toString();
+        Object targetUrlRaw = body.get("url");
+        String targetUrl = targetUrlRaw == null ? "" : targetUrlRaw.toString();
         boolean includeAdmin = Boolean.parseBoolean(body.getOrDefault("includeAdmin", Boolean.FALSE).toString());
         Log.info(HandleSettings.LOGGER_NAME,
             "Handle PID request received for record " + uuid + " (includeAdmin=" + includeAdmin + ")");
