@@ -430,13 +430,21 @@
             scope.isMdWorkflowEnableForMetadata =
               gnConfig["metadata.workflow.enable"] &&
               scope.gnCurrentEdit.metadata.draft === "y";
+            var isHandleEnabled = gnConfig["system.publication.handle.handleenabled"];
+            // If the setting isn't returned (older nodes), default to true so the
+            // widget stays visible once the feature is configured.
+            var handleFeatureEnabled =
+              isHandleEnabled === undefined || isHandleEnabled === null
+                ? true
+                : isHandleEnabled === true || isHandleEnabled === "true";
+
             scope.isDoiApplicableForMetadata =
               gnConfig["system.publication.doi.doienabled"] &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
               scope.gnCurrentEdit.metadata.isPublished() &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             scope.isHandleApplicableForMetadata =
-              gnConfig["system.publication.handle.handleenabled"] &&
+              handleFeatureEnabled &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             scope.handleMetadataLink =
