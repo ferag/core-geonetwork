@@ -34,10 +34,27 @@
   </div>
 
   <div
+    class="text-info"
+    data-ng-if="hasAttempted && !response.assign"
+  >
+    <i class="fa fa-spinner fa-spin"></i>
+    <span data-translate="">handleAssignRequested</span>
+  </div>
+
+  <div
     data-ng-if="response.assign"
     data-ng-class="{'text-danger': response.assign.status !== 201, 'text-success': response.assign.status === 201}"
   >
-    <span data-ng-if="response.assign.status === 201" data-translate="">handleAssignSuccess</span>
+    <span data-ng-if="response.assign.status === 201">
+      <span data-translate="">handleAssignSuccess</span>
+      <strong data-ng-if="response.handle">&nbsp;{{response.handle}}</strong>
+    </span>
     <span data-ng-if="response.assign.status !== 201">{{response.assign.data.description || response.assign.statusText}}</span>
+    <div data-ng-if="response.assign.status === 201 && response.assign.data && response.assign.data.targetUrl">
+      <small>
+        <span data-translate="">handleAssignTarget</span>
+        {{response.assign.data.targetUrl}}
+      </small>
+    </div>
   </div>
 </div>

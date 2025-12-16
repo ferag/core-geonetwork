@@ -37,26 +37,44 @@
           uuid: "=gnHandleWizard",
           handleUrl: "=?",
           includeAdmin: "=?",
+          autoAssign: "=?",
           xsMode: "@?"
         },
         templateUrl: "../../catalog/components/handle/partials/handlewidget.html",
         link: function (scope) {
           scope.response = {};
           scope.includeAdmin = scope.includeAdmin || false;
+          scope.autoAssign = scope.autoAssign !== false;
+          scope.hasAttempted = false;
 
-          scope.assign = function () {
+          scope.assign = function (isAuto) {
             scope.response["assign"] = null;
+            scope.hasAttempted = true;
             return gnHandleService
               .assign(scope.uuid, scope.handleUrl, scope.includeAdmin)
               .then(
                 function (r) {
                   scope.response["assign"] = r;
+                  if (r.data && r.data.handle) {
+                    scope.handleUrl = r.data.targetUrl || scope.handleUrl;
+                    scope.response.handle = r.data.handle;
+                    scope.response.adminIncluded = r.data.adminIncluded;
+                  }
                 },
                 function (r) {
                   scope.response["assign"] = r;
                 }
               );
           };
+
+          scope.$watch(
+            "handleUrl",
+            function (n) {
+              if (scope.autoAssign && n && !scope.hasAttempted) {
+                scope.assign(true);
+              }
+            }
+          );
         }
       };
     }

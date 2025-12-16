@@ -76,9 +76,11 @@ public class HandleRestClient implements IHandleClient {
             throw new HandleClientException("Unable to build request payload", e);
         }
 
+        Log.info(LOGGER_NAME, "Calling Handle endpoint " + target + " (admin block included: " + includeAdmin + ")");
         try (CloseableHttpClient client = buildClient();
              CloseableHttpResponse response = client.execute(put)) {
             int statusCode = response.getStatusLine().getStatusCode();
+            Log.info(LOGGER_NAME, "Handle response status for " + handleIdentifier + ": " + statusCode);
             if (statusCode < 200 || statusCode >= 300) {
                 throw new HandleClientException("Handle service returned status " + statusCode);
             }

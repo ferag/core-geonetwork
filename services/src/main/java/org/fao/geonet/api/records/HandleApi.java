@@ -4,8 +4,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jeeves.services.ReadWriteController;
+import jeeves.server.context.ServiceContext;
+import org.fao.geonet.api.ApiUtils;
+import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.handle.client.HandleClientException;
 import org.fao.geonet.handle.client.HandleManager;
+import org.fao.geonet.handle.client.HandleResult;
+import org.fao.geonet.handle.client.HandleSettings;
+import org.fao.geonet.utils.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,13 +56,20 @@ public class HandleApi {
         @ApiResponse(responseCode = "201", description = "Handle created/updated")
     })
     @ResponseBody
-    public ResponseEntity<Void> assignHandle(
+    public ResponseEntity<Map<String, Object>> assignHandle(
         @PathVariable(value = API_PARAM_RECORD_UUID) String uuid,
-        @RequestBody Map<String, Object> body) throws HandleClientException {
+        @RequestBody Map<String, Object> body,
+        javax.servlet.http.HttpServletRequest request) throws Exception {
 
+        AbstractMetadata metadata = ApiUtils.canEditRecord(uuid, request);
+        ServiceContext context = ApiUtils.createServiceContext(request);
         String targetUrl = body.getOrDefault("url", "").toString();
         boolean includeAdmin = Boolean.parseBoolean(body.getOrDefault("includeAdmin", Boolean.FALSE).toString());
-        handleManager.createOrUpdate(uuid, targetUrl, includeAdmin);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Log.info(HandleSettings.LOGGER_NAME,
+            "Handle PID request received for record " + uuid + " (includeAdmin=" + includeAdmin + ")");
+        HandleResult result = handleManager.createOrUpdate(context, metadata, targetUrl, includeAdmin);
+        Log.info(HandleSettings.LOGGER_NAME,
+            "Handle PID " + result.getHandle() + " stored for record " + uuid + " targeting " + result.getTargetUrl());
+        return new ResponseEntity<>(result.asMap(), HttpStatus.CREATED);
     }
 }

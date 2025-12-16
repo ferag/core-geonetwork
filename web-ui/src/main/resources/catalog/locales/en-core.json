@@ -494,6 +494,8 @@
     "assignHandlePid-help": "Create or update a Handle PID for this record using the configured Handle service endpoint.",
     "handleAssignAction": "Assign Handle",
     "handleAssignSuccess": "Handle assigned successfully.",
+    "handleAssignRequested": "Handle creation requested...",
+    "handleAssignTarget": "Handle target:",
     "handleTargetUrl": "Target URL",
     "handleIncludeAdmin": "Include HS_ADMIN permissions",
     "editorHome": "Editor board",

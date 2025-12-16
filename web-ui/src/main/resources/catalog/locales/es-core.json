@@ -492,6 +492,8 @@
     "assignHandlePid-help": "Crear o actualizar un Handle PID para este registro usando el endpoint configurado de Handle.",
     "handleAssignAction": "Asignar Handle",
     "handleAssignSuccess": "Handle asignado correctamente.",
+    "handleAssignRequested": "Creación de Handle solicitada...",
+    "handleAssignTarget": "Destino del Handle:",
     "handleTargetUrl": "URL de destino",
     "handleIncludeAdmin": "Incluir permisos HS_ADMIN",
     "editorHome": "Tablero del editor",
