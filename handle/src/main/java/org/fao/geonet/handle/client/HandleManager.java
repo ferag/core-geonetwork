@@ -100,6 +100,7 @@ public class HandleManager {
             Element recordWithHandle = setHandleValue(targetHandle, metadata.getDataInfo().getSchemaId(), metadata.getXmlData(false));
             dataManager.updateMetadata(context, metadata.getId() + "", recordWithHandle, false, true,
                 context.getLanguage(), new ISODate().toString(), true, IndexingMode.full);
+            Log.info(LOGGER_NAME, "Handle " + targetHandle + " stored in metadata " + metadata.getUuid() + ".");
         } catch (Exception e) {
             throw new HandleClientException("Handle created but failed to update metadata", e);
         }
@@ -116,14 +117,25 @@ public class HandleManager {
         }
         String language = context != null ? context.getLanguage() : null;
         if (StringUtils.isBlank(language)) {
-            language = "all";
+            language = "eng";
         }
         try {
             return metadataUtils.getDefaultUrl(metadata.getUuid(), language);
         } catch (Exception e) {
-            Log.warning(LOGGER_NAME, "Unable to resolve default landing page for " + metadata.getUuid() + ", using API URL.", e);
-            return settingManager.getNodeURL() + "api/records/" + metadata.getUuid();
+            Log.warning(LOGGER_NAME, "Unable to resolve default landing page for " + metadata.getUuid() + ", building URL from catalog base.", e);
+            return buildDefaultTargetUrl(metadata.getUuid(), language);
         }
+    }
+
+    private String buildDefaultTargetUrl(String uuid, String language) {
+        String baseUrl = settingManager.getNodeURL();
+        if (!baseUrl.endsWith("/")) {
+            baseUrl += "/";
+        }
+        if (StringUtils.isNotBlank(language) && !language.endsWith("/")) {
+            language += "/";
+        }
+        return baseUrl + "srv/" + language + "catalog.search#/metadata/" + uuid;
     }
 
     private Element setHandleValue(String handle, String schema, Element md) throws Exception {
