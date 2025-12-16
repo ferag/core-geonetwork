@@ -5,10 +5,10 @@ import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils;
 import org.fao.geonet.kernel.search.IndexingMode;
 import org.fao.geonet.kernel.setting.SettingManager;
-import org.fao.geonet.util.ISODate;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -114,8 +114,12 @@ public class HandleManager {
         if (StringUtils.isNotBlank(url)) {
             return url;
         }
+        String language = context != null ? context.getLanguage() : null;
+        if (StringUtils.isBlank(language)) {
+            language = "all";
+        }
         try {
-            return metadataUtils.getDefaultUrl(metadata.getUuid(), metadata.getDataInfo().getLangId());
+            return metadataUtils.getDefaultUrl(metadata.getUuid(), language);
         } catch (Exception e) {
             Log.warning(LOGGER_NAME, "Unable to resolve default landing page for " + metadata.getUuid() + ", using API URL.", e);
             return settingManager.getNodeURL() + "api/records/" + metadata.getUuid();
