@@ -92,7 +92,7 @@ public class HandleManager {
             throw new HandleClientException("Handle manager is not configured");
         }
         String targetHandle = buildHandleIdentifier(metadata.getUuid());
-        String targetUrl = resolveTargetUrl(context, metadata, url);
+        String targetUrl = resolveTargetUrl(metadata, url);
         Log.info(LOGGER_NAME, "Requesting Handle creation for record " + metadata.getUuid() + " -> " + targetUrl);
         client.createOrUpdate(targetHandle, targetUrl, includeAdmin);
         Log.info(LOGGER_NAME, "Handle service accepted identifier " + targetHandle + ", updating metadata record.");
@@ -111,31 +111,19 @@ public class HandleManager {
         return prefix.endsWith("/") ? prefix + identifier : prefix + "/" + identifier;
     }
 
-    private String resolveTargetUrl(ServiceContext context, AbstractMetadata metadata, String url) {
+    private String resolveTargetUrl(AbstractMetadata metadata, String url) {
         if (StringUtils.isNotBlank(url)) {
             return url;
         }
-        String language = context != null ? context.getLanguage() : null;
-        if (StringUtils.isBlank(language)) {
-            language = "eng";
-        }
-        try {
-            return metadataUtils.getDefaultUrl(metadata.getUuid(), language);
-        } catch (Exception e) {
-            Log.warning(LOGGER_NAME, "Unable to resolve default landing page for " + metadata.getUuid() + ", building URL from catalog base.", e);
-            return buildDefaultTargetUrl(metadata.getUuid(), language);
-        }
+        return buildDefaultTargetUrl(metadata.getUuid());
     }
 
-    private String buildDefaultTargetUrl(String uuid, String language) {
-        String baseUrl = settingManager.getNodeURL();
+    private String buildDefaultTargetUrl(String uuid) {
+        String baseUrl = settingManager.getBaseURL();
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
-        if (StringUtils.isNotBlank(language) && !language.endsWith("/")) {
-            language += "/";
-        }
-        return baseUrl + "srv/" + language + "catalog.search#/metadata/" + uuid;
+        return baseUrl + "srv/api/records/" + uuid;
     }
 
     private Element setHandleValue(String handle, String schema, Element md) throws Exception {

@@ -448,16 +448,35 @@
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             var buildHandleUrl = function () {
-              var recordId = scope.gnCurrentEdit.id || scope.gnCurrentEdit.uuid;
-              if (!recordId) {
+              var recordUuid = scope.gnCurrentEdit.uuid;
+              if (!recordUuid) {
                 return undefined;
               }
-              var baseUrl = gnConfigService.getServiceURL();
-              var language = scope.lang || "";
-              if (language && !language.endsWith("/")) {
-                language += "/";
+              var protocol = gnConfig["system.server.protocol"] || "http";
+              var host = gnConfig["system.server.host"] || window.location.hostname;
+              var port = gnConfig["system.server.port"];
+              var portPart = "";
+              if (
+                port &&
+                ((protocol === "http" && port != 80) ||
+                  (protocol === "https" && port != 443))
+              ) {
+                portPart = ":" + port;
               }
-              return baseUrl + language + "catalog.search#/metadata/" + recordId;
+              var baseUrl = gnConfig.env.baseURL || "";
+              baseUrl = baseUrl.endsWith("/")
+                ? baseUrl.substring(0, baseUrl.length - 1)
+                : baseUrl;
+
+              return (
+                protocol +
+                "://" +
+                host +
+                portPart +
+                baseUrl +
+                "/srv/api/records/" +
+                recordUuid
+              );
             };
 
             scope.handleMetadataLink = scope.handleMetadataLink || buildHandleUrl();
