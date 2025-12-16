@@ -92,7 +92,7 @@ public class HandleManager {
             throw new HandleClientException("Handle manager is not configured");
         }
         String targetHandle = buildHandleIdentifier(metadata.getUuid());
-        String targetUrl = resolveTargetUrl(metadata, url);
+        String targetUrl = resolveTargetUrl(context, metadata, url);
         Log.info(LOGGER_NAME, "Requesting Handle creation for record " + metadata.getUuid() + " -> " + targetUrl);
         client.createOrUpdate(targetHandle, targetUrl, includeAdmin);
         Log.info(LOGGER_NAME, "Handle service accepted identifier " + targetHandle + ", updating metadata record.");
@@ -110,7 +110,7 @@ public class HandleManager {
         return prefix.endsWith("/") ? prefix + identifier : prefix + "/" + identifier;
     }
 
-    private String resolveTargetUrl(AbstractMetadata metadata, String url) {
+    private String resolveTargetUrl(ServiceContext context, AbstractMetadata metadata, String url) {
         if (StringUtils.isNotBlank(url)) {
             return url;
         }
