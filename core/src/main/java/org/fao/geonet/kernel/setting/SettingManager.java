@@ -166,6 +166,77 @@ public class SettingManager {
         );
     }
 
+    /**
+     * Ensure DOI settings exist so legacy databases missing migrations do not trigger missing
+     * setting errors when the publication settings are loaded.
+     */
+    public void ensureDoiSettingsPresent() {
+        ensureSetting(
+            "system/publication/doi/doienabled",
+            "false",
+            SettingDataType.BOOLEAN,
+            100191,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doiurl",
+            "",
+            SettingDataType.STRING,
+            100192,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doiusername",
+            "",
+            SettingDataType.STRING,
+            100193,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipassword",
+            "",
+            SettingDataType.STRING,
+            100194,
+            true,
+            true
+        );
+        ensureSetting(
+            "system/publication/doi/doikey",
+            "",
+            SettingDataType.STRING,
+            110095,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doilandingpagetemplate",
+            "http://localhost:8080/geonetwork/srv/resources/records/{{uuid}}",
+            SettingDataType.STRING,
+            100195,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipublicurl",
+            "",
+            SettingDataType.STRING,
+            100196,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipattern",
+            "{{uuid}}",
+            SettingDataType.STRING,
+            100197,
+            false,
+            false
+        );
+    }
+
     private void ensureSetting(
         String name,
         String defaultValue,

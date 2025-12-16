@@ -358,6 +358,7 @@ public class SiteApi {
     ) throws Exception {
         UserSession session = ApiUtils.getUserSession(httpSession);
         Profile profile = session == null ? null : session.getProfile();
+        settingManager.ensureDoiSettingsPresent();
         settingManager.ensureHandleSettingsPresent();
 
         List<String> settingList = new ArrayList<>();
