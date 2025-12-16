@@ -14,6 +14,7 @@ import org.fao.geonet.utils.Log;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ public class HandleRestClient implements IHandleClient {
     private final String password;
     private final String defaultAdminPermissions;
     private final ObjectMapper objectMapper;
+    private final String authorizationHeader;
 
     public HandleRestClient(String apiUrl, String username, String password, String defaultAdminPermissions) {
         this.apiUrl = apiUrl;
@@ -35,6 +37,7 @@ public class HandleRestClient implements IHandleClient {
         this.password = password;
         this.defaultAdminPermissions = defaultAdminPermissions;
         this.objectMapper = new ObjectMapper();
+        this.authorizationHeader = buildAuthorizationHeader(username, password);
     }
 
     @Override
@@ -68,6 +71,9 @@ public class HandleRestClient implements IHandleClient {
 
         HttpPut put = new HttpPut(target);
         put.addHeader(new BasicHeader("Content-Type", CONTENT_TYPE));
+        if (authorizationHeader != null) {
+            put.addHeader(new BasicHeader("Authorization", authorizationHeader));
+        }
         try {
             String body = objectMapper.writeValueAsString(payload);
             Log.debug(LOGGER_NAME, "Handle request payload for " + handleIdentifier + ": " + body);
@@ -95,5 +101,13 @@ public class HandleRestClient implements IHandleClient {
         return HttpClientBuilder.create()
             .setDefaultCredentialsProvider(provider)
             .build();
+    }
+
+    private String buildAuthorizationHeader(String user, String pass) {
+        if (user == null || pass == null) {
+            return null;
+        }
+        String token = user + ":" + pass;
+        return "Basic " + Base64.getEncoder().encodeToString(token.getBytes(StandardCharsets.UTF_8));
     }
 }

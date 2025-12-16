@@ -20,6 +20,7 @@ public class HandleRestClientTest {
     private HttpServer server;
     private String lastBody;
     private int port;
+    private String lastAuthHeader;
 
     @Before
     public void setUp() throws Exception {
@@ -47,12 +48,14 @@ public class HandleRestClientTest {
 
         assertTrue(lastBody.contains("\"http://example.com\""));
         assertTrue(lastBody.contains("HS_ADMIN"));
+        assertTrue(lastAuthHeader.startsWith("Basic "));
     }
 
     private class RecordingHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             lastBody = readBody(exchange.getRequestBody());
+            lastAuthHeader = exchange.getRequestHeaders().getFirst("Authorization");
             byte[] response = "ok".getBytes(StandardCharsets.UTF_8);
             exchange.sendResponseHeaders(200, response.length);
             try (OutputStream os = exchange.getResponseBody()) {
