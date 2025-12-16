@@ -435,9 +435,7 @@
             scope.isHandleApplicableForMetadata =
               gnConfig["system.publication.handle.handleenabled"] &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
-              scope.gnCurrentEdit.metadata.isPublished() &&
-              JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false &&
-              !scope.isMdWorkflowEnableForMetadata;
+              JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
             scope.handleMetadataLink =
               scope.handleMetadataLink ||
               "../api/records/" + scope.gnCurrentEdit.uuid;
