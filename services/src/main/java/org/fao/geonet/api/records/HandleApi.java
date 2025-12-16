@@ -28,7 +28,6 @@ import java.util.Map;
 
 import static org.fao.geonet.api.ApiParams.API_CLASS_RECORD_OPS;
 import static org.fao.geonet.api.ApiParams.API_CLASS_RECORD_TAG;
-import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUID;
 
 /**
  * REST endpoint for creating/updating Handle identifiers.
@@ -57,7 +56,7 @@ public class HandleApi {
     })
     @ResponseBody
     public ResponseEntity<Map<String, Object>> assignHandle(
-        @PathVariable(value = API_PARAM_RECORD_UUID) String uuid,
+        @PathVariable(value = "metadataUuid") String uuid,
         @RequestBody Map<String, Object> body,
         javax.servlet.http.HttpServletRequest request) throws Exception {
 

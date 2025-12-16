@@ -447,11 +447,20 @@
               handleFeatureEnabled &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
-            scope.handleMetadataLink =
-              scope.handleMetadataLink ||
-              (scope.gnCurrentEdit.uuid
-                ? "../api/records/" + scope.gnCurrentEdit.uuid
-                : undefined);
+            var buildHandleUrl = function () {
+              var recordId = scope.gnCurrentEdit.id || scope.gnCurrentEdit.uuid;
+              if (!recordId) {
+                return undefined;
+              }
+              var baseUrl = gnConfigService.getServiceURL();
+              var language = scope.lang || "";
+              if (language && !language.endsWith("/")) {
+                language += "/";
+              }
+              return baseUrl + language + "catalog.search#/metadata/" + recordId;
+            };
+
+            scope.handleMetadataLink = scope.handleMetadataLink || buildHandleUrl();
 
             scope.$watch(
               function () {
@@ -459,7 +468,18 @@
               },
               function (uuid) {
                 if (uuid && !scope.handleMetadataLink) {
-                  scope.handleMetadataLink = "../api/records/" + uuid;
+                  scope.handleMetadataLink = buildHandleUrl();
+                }
+              }
+            );
+
+            scope.$watch(
+              function () {
+                return scope.gnCurrentEdit.id;
+              },
+              function (id) {
+                if (id && !scope.handleMetadataLink) {
+                  scope.handleMetadataLink = buildHandleUrl();
                 }
               }
             );
