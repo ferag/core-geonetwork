@@ -47,6 +47,52 @@
           scope.autoAssign = scope.autoAssign !== false;
           scope.hasAttempted = false;
 
+          var buildDefaultUrl = function () {
+            if (!scope.uuid) {
+              return scope.handleUrl;
+            }
+
+            var protocol =
+              (window.location.protocol || "http:").replace(":", "") || "http";
+            var host = window.location.hostname;
+            var port = window.location.port;
+
+            var portPart = "";
+            if (
+              port &&
+              ((protocol === "http" && port !== "80") ||
+                (protocol === "https" && port !== "443"))
+            ) {
+              portPart = ":" + port;
+            }
+
+            var baseUrl = (window.gnConfig && window.gnConfig.env.baseURL) || "";
+            baseUrl = baseUrl.endsWith("/")
+              ? baseUrl.substring(0, baseUrl.length - 1)
+              : baseUrl;
+
+            return (
+              protocol +
+              "://" +
+              host +
+              portPart +
+              baseUrl +
+              "/srv/api/records/" +
+              scope.uuid
+            );
+          };
+
+          scope.$watch(
+            function () {
+              return scope.uuid;
+            },
+            function () {
+              if (!scope.handleUrl) {
+                scope.handleUrl = buildDefaultUrl();
+              }
+            }
+          );
+
           scope.assign = function (isAuto) {
             scope.response["assign"] = null;
             scope.hasAttempted = true;
