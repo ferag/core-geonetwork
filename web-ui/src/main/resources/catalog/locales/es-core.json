@@ -489,7 +489,7 @@
     "doiViewMetadata": "DataCite metadata",
     "doiCreationTaskCreateAction-help": "Cree el DOI para el registro y cerrar la tarea",
     "assignHandlePid": "Asignar Handle PID",
-    "assignHandlePid-help": "Crear o actualizar un Handle PID para este registro usando el endpoint configurado de Handle.",
+    "assignHandlePid-help": "Crear o actualizar un Handle PID para este registro. Requiere que Handle esté habilitado en Configuración del sistema y solo aplica a registros guardados y no cosechados cuyo esquema declare cómo insertar el Handle (ISO19139/ISO19115-3).",
     "handleAssignAction": "Asignar Handle",
     "handleAssignSuccess": "Handle asignado correctamente.",
     "handleAssignRequested": "Creación de Handle solicitada...",

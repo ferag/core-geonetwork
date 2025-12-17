@@ -491,7 +491,7 @@
     "doiViewMetadata": "DataCite metadata",
     "doiCreationTaskCreateAction-help": "Create the DOI for the record and close the task",
     "assignHandlePid": "Assign Handle PID",
-    "assignHandlePid-help": "Create or update a Handle PID for this record using the configured Handle service endpoint.",
+    "assignHandlePid-help": "Create or update a Handle PID for this record. Requires Handle to be enabled in System Configuration and only applies to saved, non-harvested records whose schema defines Handle insertion (ISO19139/ISO19115-3).",
     "handleAssignAction": "Assign Handle",
     "handleAssignSuccess": "Handle assigned successfully.",
     "handleAssignRequested": "Handle creation requested...",
