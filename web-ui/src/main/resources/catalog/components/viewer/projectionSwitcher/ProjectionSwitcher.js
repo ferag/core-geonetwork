@@ -103,8 +103,29 @@
                 newProj
               );
 
-              if (newProj.getExtent()) {
-                newExtent = newProj.getExtent();
+              var newCenter = projectionConfig.center || view.getCenter();
+              if (projectionConfig.centerLonLat) {
+                newCenter = ol.proj.transform(
+                  projectionConfig.centerLonLat,
+                  "EPSG:4326",
+                  newProj
+                );
+              }
+
+              var projectionExtent = newProj.getExtent();
+              if (projectionExtent) {
+                newExtent = projectionExtent;
+              } else {
+                var targetWorldExtent =
+                  projectionConfig.worldExtent || newProj.getWorldExtent();
+
+                if (targetWorldExtent) {
+                  newExtent = ol.proj.transformExtent(
+                    targetWorldExtent,
+                    "EPSG:4326",
+                    newProj
+                  );
+                }
               }
 
               var mapsConfig = {
@@ -200,7 +221,13 @@
               });
 
               // Relocate map to extent
-              scope.map.getView().fit(newExtent, scope.map.getSize());
+              var targetResolution = scope.map
+                .getView()
+                .getResolutionForExtent(newExtent, scope.map.getSize());
+              if (targetResolution) {
+                scope.map.getView().setResolution(targetResolution);
+              }
+              scope.map.getView().setCenter(newCenter);
 
               scope.listOpen = false;
             };

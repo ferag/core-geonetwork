@@ -802,12 +802,38 @@
               {
                 code: "EPSG:3857",
                 label: "Google mercator (EPSG:3857)"
+              },
+              {
+                code: "EPSG:3413",
+                label: "NSIDC Polar Stereographic North (EPSG:3413)"
+              },
+              {
+                code: "EPSG:3031",
+                label: "WGS 84 / Antarctic Polar Stereographic (EPSG:3031)"
               }
             ],
             switcherProjectionList: [
               {
                 code: "EPSG:3857",
                 label: "Google mercator (EPSG:3857)"
+              },
+              {
+                code: "EPSG:3413",
+                label: "NSIDC Polar Stereographic North (EPSG:3413)",
+                def:
+                  "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 " +
+                  "+y_0=0 +datum=WGS84 +units=m +no_defs",
+                worldExtent: [-180, -90, 180, 90],
+                centerLonLat: [0, 90]
+              },
+              {
+                code: "EPSG:3031",
+                label: "WGS 84 / Antarctic Polar Stereographic (EPSG:3031)",
+                def:
+                  "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 " +
+                  "+y_0=0 +datum=WGS84 +units=m +no_defs",
+                worldExtent: [-180, -90, 180, 90],
+                centerLonLat: [0, -90]
               }
             ],
             disabledTools: {
