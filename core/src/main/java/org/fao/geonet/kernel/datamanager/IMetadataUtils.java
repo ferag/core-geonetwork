@@ -127,6 +127,8 @@ public interface IMetadataUtils {
 
     String getDoi(String uuid) throws ResourceNotFoundException, IOException, JDOMException;
 
+    String getHandle(String uuid) throws ResourceNotFoundException, IOException, JDOMException;
+
     String getResourceIdentifier(String uuid) throws ResourceNotFoundException, JDOMException, IOException;
 
     /**

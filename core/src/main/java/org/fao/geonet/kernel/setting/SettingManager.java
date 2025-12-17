@@ -112,6 +112,153 @@ public class SettingManager {
     }
 
     /**
+     * Ensure Handle PID settings exist so they are visible in the admin UI even if migrations did
+     * not run.
+     */
+    public void ensureHandleSettingsPresent() {
+        ensureSetting(
+            "system/publication/handle/handleenabled",
+            "false",
+            SettingDataType.BOOLEAN,
+            100198,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/handle/url",
+            "",
+            SettingDataType.STRING,
+            100199,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/handle/prefix",
+            "",
+            SettingDataType.STRING,
+            100200,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/handle/username",
+            "",
+            SettingDataType.STRING,
+            100201,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/handle/password",
+            "",
+            SettingDataType.STRING,
+            100202,
+            true,
+            true
+        );
+        ensureSetting(
+            "system/publication/handle/adminPermissions",
+            "",
+            SettingDataType.STRING,
+            100203,
+            false,
+            false
+        );
+    }
+
+    /**
+     * Ensure DOI settings exist so legacy databases missing migrations do not trigger missing
+     * setting errors when the publication settings are loaded.
+     */
+    public void ensureDoiSettingsPresent() {
+        ensureSetting(
+            "system/publication/doi/doienabled",
+            "false",
+            SettingDataType.BOOLEAN,
+            100191,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doiurl",
+            "",
+            SettingDataType.STRING,
+            100192,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doiusername",
+            "",
+            SettingDataType.STRING,
+            100193,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipassword",
+            "",
+            SettingDataType.STRING,
+            100194,
+            true,
+            true
+        );
+        ensureSetting(
+            "system/publication/doi/doikey",
+            "",
+            SettingDataType.STRING,
+            110095,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doilandingpagetemplate",
+            "http://localhost:8080/geonetwork/srv/resources/records/{{uuid}}",
+            SettingDataType.STRING,
+            100195,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipublicurl",
+            "",
+            SettingDataType.STRING,
+            100196,
+            false,
+            false
+        );
+        ensureSetting(
+            "system/publication/doi/doipattern",
+            "{{uuid}}",
+            SettingDataType.STRING,
+            100197,
+            false,
+            false
+        );
+    }
+
+    private void ensureSetting(
+        String name,
+        String defaultValue,
+        SettingDataType dataType,
+        int position,
+        boolean internal,
+        boolean encrypted
+    ) {
+        if (!repo.findById(name).isPresent()) {
+            repo.save(new Setting()
+                .setName(name)
+                .setValue(defaultValue)
+                .setDataType(dataType)
+                .setPosition(position)
+                .setInternal(internal)
+                .setEncrypted(encrypted)
+                .setEditable(true)
+            );
+        }
+    }
+
+    /**
      * Get all settings as xml.
      *
      * @param asTree get the settings as a tree. If true only settings from the system family will

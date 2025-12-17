@@ -52,7 +52,10 @@
     return function (input) {
       var filtered = [];
       angular.forEach(input, function (el) {
-        if (el.editable === true) {
+        if (
+          el.name.indexOf("system/publication/handle/") === 0 ||
+          el.editable !== false
+        ) {
           filtered.push(el);
         }
       });

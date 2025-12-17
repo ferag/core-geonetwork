@@ -74,6 +74,7 @@
     <Logger name="geonetwork.thesaurus-man" level="error"/>
     <Logger name="geonetwork.userwatchlist" level="error"/>
     <Logger name="geonetwork.wro4j" level="error"/>
+    <Logger name="geonetwork.handle" level="error"/>
     <Logger name="geonetwork.doi" level="error"/>
 
     <!--  Jeeves module and submodule logger configuration -->

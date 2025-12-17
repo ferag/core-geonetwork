@@ -422,16 +422,82 @@
             scope.lang = scope.$parent.lang;
             scope.readonly = attrs["readonly"] || false;
             scope.gnCurrentEdit.associatedPanelConfigId = attrs["configId"] || "default";
-            scope.relations = [];
+            scope.relations = {
+              onlines: [],
+              thumbnails: []
+            };
             scope.gnCurrentEdit.codelistFilter = attrs["codelistFilter"];
             scope.isMdWorkflowEnableForMetadata =
               gnConfig["metadata.workflow.enable"] &&
               scope.gnCurrentEdit.metadata.draft === "y";
+            var isHandleEnabled = gnConfig["system.publication.handle.handleenabled"];
+            // If the setting isn't returned (older nodes), default to true so the
+            // widget stays visible once the feature is configured.
+            var handleFeatureEnabled =
+              isHandleEnabled === undefined || isHandleEnabled === null
+                ? true
+                : isHandleEnabled === true || isHandleEnabled === "true";
+
             scope.isDoiApplicableForMetadata =
               gnConfig["system.publication.doi.doienabled"] &&
               scope.gnCurrentEdit.metadata.isTemplate === "n" &&
               scope.gnCurrentEdit.metadata.isPublished() &&
               JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
+            scope.isHandleApplicableForMetadata =
+              handleFeatureEnabled &&
+              scope.gnCurrentEdit.metadata.isTemplate === "n" &&
+              JSON.parse(scope.gnCurrentEdit.metadata.isHarvested) === false;
+            var buildHandleUrl = function () {
+              var recordUuid = scope.gnCurrentEdit.uuid;
+              if (!recordUuid) {
+                return undefined;
+              }
+              var protocol = gnConfig["system.server.protocol"] || "http";
+              var host = gnConfig["system.server.host"] || window.location.hostname;
+              var port = gnConfig["system.server.port"];
+              var portPart = "";
+              if (
+                port &&
+                ((protocol === "http" && port != 80) ||
+                  (protocol === "https" && port != 443))
+              ) {
+                portPart = ":" + port;
+              }
+              var baseUrl = gnConfig.env.baseURL || "";
+              baseUrl = baseUrl.endsWith("/")
+                ? baseUrl.substring(0, baseUrl.length - 1)
+                : baseUrl;
+
+              return (
+                protocol +
+                "://" +
+                host +
+                portPart +
+                baseUrl +
+                "/srv/api/records/" +
+                recordUuid
+              );
+            };
+
+            scope.handleMetadataLink = buildHandleUrl();
+
+            scope.$watch(
+              function () {
+                return scope.gnCurrentEdit.uuid;
+              },
+              function () {
+                scope.handleMetadataLink = buildHandleUrl();
+              }
+            );
+
+            scope.$watch(
+              function () {
+                return scope.gnCurrentEdit.id;
+              },
+              function () {
+                scope.handleMetadataLink = buildHandleUrl();
+              }
+            );
 
             /**
              * Calls service 'relations.get' to load
@@ -439,15 +505,20 @@
              * metadata into the list
              */
             var loadRelations = function () {
-              gnOnlinesrc.getAllResources().then(function (data) {
-                var res = gnOnlinesrc.formatResources(
-                  data,
-                  scope.lang,
-                  gnCurrentEdit.mdLanguage
-                );
-                scope.relations = res.relations;
-                scope.siblingTypes = scope.siblingTypes;
-              });
+              gnOnlinesrc.getAllResources().then(
+                function (data) {
+                  var res = gnOnlinesrc.formatResources(
+                    data,
+                    scope.lang,
+                    gnCurrentEdit.mdLanguage
+                  );
+                  scope.relations = res.relations;
+                  scope.siblingTypes = scope.siblingTypes;
+                },
+                function () {
+                  scope.relations = scope.relations || { onlines: [], thumbnails: [] };
+                }
+              );
             };
             scope.isCategoryEnable = function (category) {
               return angular.isUndefined(scope.types)

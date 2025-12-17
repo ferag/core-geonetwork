@@ -51,6 +51,11 @@
                     value="*//cit:CI_OnlineResource[cit:protocol/gco:CharacterString = 'DOI' or cit:protocol/gco:CharacterString = 'WWW:LINK-1.0-http--metadata-URL']/cit:linkage/gco:CharacterString/text()"/>
         </bean>
         <bean class="org.fao.geonet.kernel.schema.SavedQuery">
+          <property name="id" value="handle-get"/>
+          <property name="xpath"
+                    value="mdb:identificationInfo/*/mri:citation/*/cit:identifier/*/mcc:code/*[contains(text(), 'hdl.handle.net') or contains(@xlink:href, 'hdl.handle.net')]/text()"/>
+        </bean>
+        <bean class="org.fao.geonet.kernel.schema.SavedQuery">
           <property name="id" value="resourceid-get"/>
           <property name="xpath"
                     value="mdb:identificationInfo/*/mri:citation/*/cit:identifier[1]/*/mcc:code/*/text()"/>
