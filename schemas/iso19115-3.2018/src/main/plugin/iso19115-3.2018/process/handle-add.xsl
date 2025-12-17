@@ -18,14 +18,7 @@
   <xsl:param name="handleProxy"
              select="'https://hdl.handle.net/'"/>
 
-  <xsl:variable name="isHandleAlreadySet"
-                select="count(//mdb:identificationInfo/*/mri:citation/*/
-                              cit:identifier/*/mcc:code[
-                                contains(*/text(), 'hdl.handle.net/')
-                                or contains(*/@xlink:href, 'hdl.handle.net/')]) > 0"/>
-
-  <xsl:template match="mdb:identificationInfo[1]/*/mri:citation/*[not($isHandleAlreadySet)]"
-                priority="2">
+  <xsl:template match="mdb:identificationInfo[1]/*/mri:citation/*" priority="2">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
 
@@ -36,6 +29,9 @@
                            |cit:editionDate
                            |cit:identifier
                           "/>
+      <xsl:copy-of select="cit:identifier[not(.//gcx:Anchor[contains(@xlink:href, 'hdl.handle.net')])
+                                     and not(.//gco:CharacterString[contains(text(), 'hdl.handle.net')])]"/>
+
       <cit:identifier>
         <mcc:MD_Identifier>
           <mcc:code>

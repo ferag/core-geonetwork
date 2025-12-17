@@ -100,7 +100,11 @@ public class HandleManager {
             Element recordWithHandle = setHandleValue(targetHandle, metadata.getDataInfo().getSchemaId(), metadata.getXmlData(false));
             dataManager.updateMetadata(context, metadata.getId() + "", recordWithHandle, false, true,
                 context.getLanguage(), new ISODate().toString(), true, IndexingMode.full);
-            Log.info(LOGGER_NAME, "Handle " + targetHandle + " stored in metadata " + metadata.getUuid() + ".");
+            String persistedHandle = metadataUtils.getHandle(metadata.getUuid());
+            if (StringUtils.isBlank(persistedHandle)) {
+                throw new HandleClientException("Handle created but not found in metadata after update");
+            }
+            Log.info(LOGGER_NAME, "Handle " + persistedHandle + " stored in metadata " + metadata.getUuid() + ".");
         } catch (Exception e) {
             throw new HandleClientException("Handle created but failed to update metadata", e);
         }

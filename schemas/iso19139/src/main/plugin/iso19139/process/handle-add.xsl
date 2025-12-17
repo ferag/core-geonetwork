@@ -17,14 +17,7 @@
   <xsl:param name="handleProxy"
              select="'https://hdl.handle.net/'"/>
 
-  <xsl:variable name="isHandleAlreadySet"
-                select="count(//gmd:identificationInfo/*/gmd:citation/*/
-                              gmd:identifier/*/gmd:code[
-                                contains(*/text(), 'hdl.handle.net/')
-                                or contains(*/@xlink:href, 'hdl.handle.net/')]) > 0"/>
-
-  <xsl:template match="gmd:identificationInfo[1]/*/gmd:citation/*[not($isHandleAlreadySet)]"
-                priority="2">
+  <xsl:template match="gmd:identificationInfo[1]/*/gmd:citation/*" priority="2">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
 
@@ -35,6 +28,9 @@
                            |gmd:editionDate
                            |gmd:identifier
                           "/>
+      <xsl:copy-of select="gmd:identifier[not(.//gmx:Anchor[contains(@xlink:href, 'hdl.handle.net')])
+                                     and not(.//gco:CharacterString[contains(text(), 'hdl.handle.net')])]"/>
+
       <gmd:identifier>
         <gmd:MD_Identifier>
           <gmd:code>
