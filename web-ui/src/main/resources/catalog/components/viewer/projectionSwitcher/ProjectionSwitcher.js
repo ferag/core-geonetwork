@@ -103,6 +103,15 @@
                 newProj
               );
 
+              var newCenter = projectionConfig.center || view.getCenter();
+              if (projectionConfig.centerLonLat) {
+                newCenter = ol.proj.transform(
+                  projectionConfig.centerLonLat,
+                  "EPSG:4326",
+                  newProj
+                );
+              }
+
               var projectionExtent = newProj.getExtent();
               if (projectionExtent) {
                 newExtent = projectionExtent;
@@ -212,7 +221,13 @@
               });
 
               // Relocate map to extent
-              scope.map.getView().fit(newExtent, scope.map.getSize());
+              var targetResolution = scope.map
+                .getView()
+                .getResolutionForExtent(newExtent, scope.map.getSize());
+              if (targetResolution) {
+                scope.map.getView().setResolution(targetResolution);
+              }
+              scope.map.getView().setCenter(newCenter);
 
               scope.listOpen = false;
             };
