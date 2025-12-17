@@ -103,8 +103,20 @@
                 newProj
               );
 
-              if (newProj.getExtent()) {
-                newExtent = newProj.getExtent();
+              var projectionExtent = newProj.getExtent();
+              if (projectionExtent) {
+                newExtent = projectionExtent;
+              } else {
+                var targetWorldExtent =
+                  projectionConfig.worldExtent || newProj.getWorldExtent();
+
+                if (targetWorldExtent) {
+                  newExtent = ol.proj.transformExtent(
+                    targetWorldExtent,
+                    "EPSG:4326",
+                    newProj
+                  );
+                }
               }
 
               var mapsConfig = {
