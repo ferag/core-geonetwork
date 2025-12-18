@@ -22,6 +22,10 @@
           <div class="gn-lineage-step-title">
             {{process.description || ('processingStep' | translate)}}
           </div>
+          <div class="gn-lineage-step-detail" data-ng-if="process.dateTime">
+            <i class="fa fa-clock-o"></i>
+            {{process.dateTime | date:'medium'}}
+          </div>
           <div class="gn-lineage-step-detail" data-ng-if="process.softwareTitle || process.softwareIdentifier">
             <span data-translate="">softwareReference</span>
             <span data-ng-if="process.softwareTitle">{{process.softwareTitle}}</span>
@@ -31,6 +35,26 @@
             >
               ({{process.softwareIdentifier}})
             </span>
+          </div>
+          <div class="gn-lineage-sources" data-ng-if="process.sources && process.sources.length">
+            <div class="gn-lineage-source-title">
+              <i class="fa fa-link"></i>
+              {{'processSources' | translate}}
+            </div>
+            <div class="gn-lineage-source" data-ng-repeat="source in process.sources">
+              <div class="gn-lineage-source-desc" data-ng-if="source.description">
+                {{source.description}}
+              </div>
+              <div class="gn-lineage-source-citation" data-ng-if="source.citationTitle || source.citationAltTitle">
+                <strong>{{source.citationTitle}}</strong>
+                <span class="text-muted" data-ng-if="source.citationAltTitle">({{source.citationAltTitle}})</span>
+              </div>
+              <div class="gn-lineage-source-date" data-ng-if="source.citationDate">
+                <i class="fa fa-calendar"></i>
+                {{source.citationDate}}
+                <span class="text-muted" data-ng-if="source.citationDateType">— {{source.citationDateType}}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

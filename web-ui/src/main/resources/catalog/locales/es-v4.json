@@ -414,6 +414,8 @@
   "dataProductVariables": "Variables del producto de datos",
   "variableError": "Error",
   "variablePrecision": "Precisión",
+  "variableAccuracy": "Precisión",
   "gridResolution": "Resolución espacial",
-  "measure": "Medida"
+  "measure": "Medida",
+  "processSources": "Fuentes"
 }

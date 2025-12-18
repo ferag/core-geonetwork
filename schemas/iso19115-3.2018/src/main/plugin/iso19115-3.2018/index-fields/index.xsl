@@ -1138,6 +1138,8 @@
                         select="normalize-space(mrl:processingInformation/mrl:LE_Processing/
                                                  mrl:softwareReference/cit:CI_Citation/
                                                  cit:identifier/*/mcc:code/*[1])"/>
+          <xsl:variable name="processDateTime"
+                        select="normalize-space(mrl:dateTime/gco:DateTime[1])"/>
 
           <xsl:variable name="processParts">
             <xsl:if test="$description != ''">
@@ -1149,11 +1151,60 @@
             <xsl:if test="$softwareIdentifier != ''">
               <value>"softwareIdentifier": "<xsl:value-of select="util:escapeForJson($softwareIdentifier)"/>"</value>
             </xsl:if>
+            <xsl:if test="$processDateTime != ''">
+              <value>"dateTime": "<xsl:value-of select="util:escapeForJson($processDateTime)"/>"</value>
+            </xsl:if>
+          </xsl:variable>
+
+          <xsl:variable name="processSources">
+            <xsl:for-each select="mrl:source/*">
+              <xsl:variable name="sourceDesc"
+                            select="normalize-space(mrl:description/gco:CharacterString[1])"/>
+              <xsl:variable name="citationTitle"
+                            select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:title/*[1])"/>
+              <xsl:variable name="citationAltTitle"
+                            select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:alternateTitle/*[1])"/>
+              <xsl:variable name="citationDate"
+                            select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:date/cit:CI_Date[1]/cit:date/*[1])"/>
+              <xsl:variable name="citationDateType"
+                            select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:date/cit:CI_Date[1]/cit:dateType/cit:CI_DateTypeCode/@codeListValue)"/>
+
+              <xsl:variable name="sourceParts">
+                <xsl:if test="$sourceDesc != ''">
+                  <value>"description": "<xsl:value-of select="util:escapeForJson($sourceDesc)"/>"</value>
+                </xsl:if>
+                <xsl:if test="$citationTitle != ''">
+                  <value>"citationTitle": "<xsl:value-of select="util:escapeForJson($citationTitle)"/>"</value>
+                </xsl:if>
+                <xsl:if test="$citationAltTitle != ''">
+                  <value>"citationAltTitle": "<xsl:value-of select="util:escapeForJson($citationAltTitle)"/>"</value>
+                </xsl:if>
+                <xsl:if test="$citationDate != ''">
+                  <value>"citationDate": "<xsl:value-of select="util:escapeForJson($citationDate)"/>"</value>
+                </xsl:if>
+                <xsl:if test="$citationDateType != ''">
+                  <value>"citationDateType": "<xsl:value-of select="util:escapeForJson($citationDateType)"/>"</value>
+                </xsl:if>
+              </xsl:variable>
+
+              <xsl:if test="$sourceParts/value">
+                <value>{<xsl:value-of select="string-join($sourceParts/value, ',')"/>}</value>
+              </xsl:if>
+            </xsl:for-each>
           </xsl:variable>
 
           <xsl:if test="$processParts/value">
             <lineageProcess type="object">{
               <xsl:value-of select="string-join($processParts/value, ',')"/>
+              <xsl:if test="$processSources/value and $processParts/value">,</xsl:if>
+              <xsl:if test="$processSources/value">
+                "sources": [
+                  <xsl:for-each select="$processSources/value">
+                    <xsl:value-of select="."/>
+                    <xsl:if test="position() != last()">,</xsl:if>
+                  </xsl:for-each>
+                ]
+              </xsl:if>
               }</lineageProcess>
           </xsl:if>
         </xsl:for-each>
@@ -1218,6 +1269,7 @@
                             select="normalize-space(mdq:value/*[1])"/>
               <xsl:variable name="measureType"
                             select="if (contains(lower-case($measureLabel), 'error')) then 'error'
+                                    else if (contains(lower-case($measureLabel), 'accuracy')) then 'accuracy'
                                     else if (contains(lower-case($measureLabel), 'precision')) then 'precision'
                                     else ''"/>
               <xsl:if test="$measureValue != ''">

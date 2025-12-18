@@ -413,7 +413,9 @@
   "softwareReference": "Software reference",
   "dataProductVariables": "Data product variables",
   "variableError": "Error",
-  "variablePrecision": "Precision",
+  "variablePrecision": "Accuracy",
+  "variableAccuracy": "Accuracy",
   "gridResolution": "Spatial resolution",
-  "measure": "Measure"
+  "measure": "Measure",
+  "processSources": "Sources"
 }

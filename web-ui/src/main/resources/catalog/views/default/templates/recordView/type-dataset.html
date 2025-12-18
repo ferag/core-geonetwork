@@ -43,12 +43,14 @@
               data-ng-class="{
                 'gn-chip-error': measure.type === 'error',
                 'gn-chip-precision': measure.type === 'precision',
+                'gn-chip-accuracy': measure.type === 'accuracy',
                 'gn-chip-generic': !measure.type
               }"
             >
               <span data-ng-switch="measure.type">
                 <span data-ng-switch-when="error" data-translate="">variableError</span>
                 <span data-ng-switch-when="precision" data-translate="">variablePrecision</span>
+                <span data-ng-switch-when="accuracy" data-translate="">variableAccuracy</span>
                 <span data-ng-switch-default>{{measure.label || ('measure' | translate)}}</span>
               </span>
             </span>
