@@ -46,7 +46,10 @@
                 {{source.description}}
               </div>
               <div class="gn-lineage-source-citation" data-ng-if="source.citationTitle || source.citationAltTitle">
-                <strong>{{source.citationTitle}}</strong>
+                <a data-ng-if="source.citationLink" ng-href="{{source.citationLink}}" target="_blank">
+                  <strong>{{source.citationTitle || source.citationLink}}</strong>
+                </a>
+                <strong data-ng-if="!source.citationLink">{{source.citationTitle}}</strong>
                 <span class="text-muted" data-ng-if="source.citationAltTitle">({{source.citationAltTitle}})</span>
               </div>
               <div class="gn-lineage-source-date" data-ng-if="source.citationDate">

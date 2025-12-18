@@ -1168,6 +1168,8 @@
                             select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:date/cit:CI_Date[1]/cit:date/*[1])"/>
               <xsl:variable name="citationDateType"
                             select="normalize-space(mrl:sourceCitation/cit:CI_Citation/cit:date/cit:CI_Date[1]/cit:dateType/cit:CI_DateTypeCode/@codeListValue)"/>
+              <xsl:variable name="citationLink"
+                            select="normalize-space((mrl:sourceCitation/cit:CI_Citation/(cit:title|cit:alternateTitle|cit:identifier//mcc:code)/*/@xlink:href)[1])"/>
 
               <xsl:variable name="sourceParts">
                 <xsl:if test="$sourceDesc != ''">
@@ -1184,6 +1186,9 @@
                 </xsl:if>
                 <xsl:if test="$citationDateType != ''">
                   <value>"citationDateType": "<xsl:value-of select="util:escapeForJson($citationDateType)"/>"</value>
+                </xsl:if>
+                <xsl:if test="$citationLink != ''">
+                  <value>"citationLink": "<xsl:value-of select="util:escapeForJson($citationLink)"/>"</value>
                 </xsl:if>
               </xsl:variable>
 
