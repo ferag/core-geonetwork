@@ -638,6 +638,48 @@
         </xsl:for-each>
 
 
+        <xsl:for-each select="gmd:spatialRepresentationInfo/gmd:MD_GridSpatialRepresentation">
+          <xsl:variable name="row"
+                        select="gmd:axisDimensionProperties/gmd:MD_Dimension[
+                                  gmd:dimensionName/gmd:MD_DimensionNameTypeCode/@codeListValue = 'row'][1]"/>
+          <xsl:variable name="column"
+                        select="gmd:axisDimensionProperties/gmd:MD_Dimension[
+                                  gmd:dimensionName/gmd:MD_DimensionNameTypeCode/@codeListValue = 'column'][1]"/>
+          <xsl:variable name="rowResolution"
+                        select="normalize-space($row/gmd:resolution/*[1])"/>
+          <xsl:variable name="columnResolution"
+                        select="normalize-space($column/gmd:resolution/*[1])"/>
+          <xsl:variable name="rowUnit"
+                        select="normalize-space(if (contains($row/gmd:resolution/*[1]/@uom, '#'))
+                                                then substring-after($row/gmd:resolution/*[1]/@uom, '#')
+                                                else $row/gmd:resolution/*[1]/@uom)"/>
+          <xsl:variable name="columnUnit"
+                        select="normalize-space(if (contains($column/gmd:resolution/*[1]/@uom, '#'))
+                                                then substring-after($column/gmd:resolution/*[1]/@uom, '#')
+                                                else $column/gmd:resolution/*[1]/@uom)"/>
+          <xsl:variable name="cellGeometry"
+                        select="normalize-space(gmd:cellGeometry/gmd:MD_CellGeometryCode/@codeListValue)"/>
+
+          <xsl:variable name="gridParts">
+            <xsl:if test="$rowResolution != ''">
+              <value>"row": {"resolution": "<xsl:value-of select="util:escapeForJson($rowResolution)"/>"<xsl:if test="$rowUnit != ''">, "unit": "<xsl:value-of select="util:escapeForJson($rowUnit)"/>"</xsl:if>}</value>
+            </xsl:if>
+            <xsl:if test="$columnResolution != ''">
+              <value>"column": {"resolution": "<xsl:value-of select="util:escapeForJson($columnResolution)"/>"<xsl:if test="$columnUnit != ''">, "unit": "<xsl:value-of select="util:escapeForJson($columnUnit)"/>"</xsl:if>}</value>
+            </xsl:if>
+            <xsl:if test="$cellGeometry != ''">
+              <value>"cellGeometry": "<xsl:value-of select="util:escapeForJson($cellGeometry)"/>"</value>
+            </xsl:if>
+          </xsl:variable>
+
+          <xsl:if test="$gridParts/value">
+            <gridSpatialRepresentation type="object">{
+              <xsl:value-of select="string-join($gridParts/value, ',')"/>
+              }</gridSpatialRepresentation>
+          </xsl:if>
+        </xsl:for-each>
+
+
         <xsl:for-each select="gmd:resourceConstraints/*">
           <xsl:variable name="fieldPrefix" select="local-name()"/>
           <xsl:for-each select="gmd:otherConstraints">
@@ -949,7 +991,10 @@
       </xsl:for-each>
 
 
-      <xsl:for-each select="gmd:dataQualityInfo/*">
+        <xsl:for-each select="gmd:dataQualityInfo/*">
+        <xsl:variable name="scopeVariable"
+                      select="normalize-space(gmd:scope/gmd:DQ_Scope/gmd:levelDescription/*/*/gco:CharacterString[1])"/>
+
         <xsl:for-each select="gmd:lineage//gmd:source[@uuidref != '']">
           <xsl:variable name="xlink"
                         select="@xlink:href"/>
@@ -972,6 +1017,79 @@
 
         <xsl:copy-of select="gn-fn-index:add-multilingual-field('lineage', gmd:lineage/gmd:LI_Lineage/
                                 gmd:statement, $allLanguages)"/>
+
+
+        <xsl:for-each select="gmd:lineage//gmd:processStep/gmd:LI_ProcessStep">
+          <xsl:variable name="description"
+                        select="normalize-space(gmd:description/gco:CharacterString[1])"/>
+          <xsl:variable name="softwareTitle"
+                        select="normalize-space(gmd:processingInformation/gmd:LE_Processing/
+                                                 gmd:softwareReference/gmd:CI_Citation/
+                                                 gmd:title/*[1])"/>
+          <xsl:variable name="softwareIdentifier"
+                        select="normalize-space(gmd:processingInformation/gmd:LE_Processing/
+                                                 gmd:softwareReference/gmd:CI_Citation/
+                                                 gmd:identifier/*/gmd:code/*[1])"/>
+
+          <xsl:variable name="processParts">
+            <xsl:if test="$description != ''">
+              <value>"description": "<xsl:value-of select="util:escapeForJson($description)"/>"</value>
+            </xsl:if>
+            <xsl:if test="$softwareTitle != ''">
+              <value>"softwareTitle": "<xsl:value-of select="util:escapeForJson($softwareTitle)"/>"</value>
+            </xsl:if>
+            <xsl:if test="$softwareIdentifier != ''">
+              <value>"softwareIdentifier": "<xsl:value-of select="util:escapeForJson($softwareIdentifier)"/>"</value>
+            </xsl:if>
+          </xsl:variable>
+
+          <xsl:if test="$processParts/value">
+            <lineageProcess type="object">{
+              <xsl:value-of select="string-join($processParts/value, ',')"/>
+              }</lineageProcess>
+          </xsl:if>
+        </xsl:for-each>
+
+        <xsl:if test="$scopeVariable != ''">
+          <xsl:variable name="variableMeasures">
+            <xsl:for-each select="gmd:report/gmd:DQ_QuantitativeAttributeAccuracy/gmd:result/gmd:DQ_QuantitativeResult">
+              <xsl:variable name="measureLabel"
+                            select="normalize-space(gmd:valueUnit//gml:name[1])"/>
+              <xsl:variable name="measureIdentifier"
+                            select="normalize-space(gmd:valueUnit//gml:identifier[1])"/>
+              <xsl:variable name="measureValue"
+                            select="normalize-space(gmd:value/*[1])"/>
+              <xsl:variable name="measureType"
+                            select="if (contains(lower-case($measureLabel), 'error')) then 'error'
+                                    else if (contains(lower-case($measureLabel), 'precision')) then 'precision'
+                                    else ''"/>
+              <xsl:if test="$measureValue != ''">
+                <measure type="object">{
+                  "label": "<xsl:value-of select="util:escapeForJson($measureLabel)"/>"
+                  <xsl:if test="$measureType != ''">,
+                    "type": "<xsl:value-of select="$measureType"/>"
+                  </xsl:if>,
+                  "value": "<xsl:value-of select="util:escapeForJson($measureValue)"/>"
+                  <xsl:if test="$measureIdentifier != ''">,
+                    "unit": "<xsl:value-of select="util:escapeForJson($measureIdentifier)"/>"
+                  </xsl:if>
+                  }</measure>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:variable>
+
+          <xsl:if test="$variableMeasures/measure">
+            <dataQualityVariable type="object">{
+              "name": "<xsl:value-of select="util:escapeForJson($scopeVariable)"/>",
+              "measures": [
+                <xsl:for-each select="$variableMeasures/measure">
+                  <xsl:value-of select="."/>
+                  <xsl:if test="position() != last()">,</xsl:if>
+                </xsl:for-each>
+              ]
+              }</dataQualityVariable>
+          </xsl:if>
+        </xsl:if>
 
 
         <xsl:for-each select="gmd:report/*[gmd:nameOfMeasure/gco:CharacterString != '']">

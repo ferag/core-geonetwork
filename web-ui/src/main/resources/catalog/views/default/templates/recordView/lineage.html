@@ -1,6 +1,41 @@
-<div data-ng-if="mdView.current.record.lineage">
+<div
+  data-ng-if="mdView.current.record.lineage || (mdView.current.record.lineageProcess && mdView.current.record.lineageProcess.length)"
+  class="gn-lineage-section"
+>
   <h2 data-translate="">lineage</h2>
-  <p data-ng-bind-html="mdView.current.record.lineage | linky | newlines"></p>
+  <p
+    data-ng-if="mdView.current.record.lineage"
+    data-ng-bind-html="mdView.current.record.lineage | linky | newlines"
+  ></p>
+
+  <div
+    class="gn-lineage-steps"
+    data-ng-if="mdView.current.record.lineageProcess && mdView.current.record.lineageProcess.length"
+  >
+    <h3 data-translate="">processingSteps</h3>
+    <div class="gn-lineage-step" data-ng-repeat="process in mdView.current.record.lineageProcess">
+      <div class="gn-lineage-step-header">
+        <span class="badge badge-rounded">
+          <i class="fa fa-fw fa-cogs"></i>
+        </span>
+        <div>
+          <div class="gn-lineage-step-title">
+            {{process.description || ('processingStep' | translate)}}
+          </div>
+          <div class="gn-lineage-step-detail" data-ng-if="process.softwareTitle || process.softwareIdentifier">
+            <span data-translate="">softwareReference</span>
+            <span data-ng-if="process.softwareTitle">{{process.softwareTitle}}</span>
+            <span
+              class="text-muted"
+              data-ng-if="process.softwareIdentifier"
+            >
+              ({{process.softwareIdentifier}})
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div data-ng-if="mdView.current.record.sourceDescription">

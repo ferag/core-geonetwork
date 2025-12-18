@@ -577,7 +577,10 @@ public class EsSearchManager implements ISearchManager {
             .add("resourceTemporalDateRange")
             .add("resourceTemporalExtentDateRange")
             .add("resourceTemporalExtentDetails")
+            .add("gridSpatialRepresentation")
             .add("licenseObject")
+            .add("dataQualityVariable")
+            .add("lineageProcess")
             .build();
         booleanFields = ImmutableSet.<String>builder()
             .add("hasxlinks")

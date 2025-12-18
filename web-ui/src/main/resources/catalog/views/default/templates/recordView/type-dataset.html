@@ -24,6 +24,46 @@
   </div>
 </div>
 
+<div
+  class="row gn-section gn-section-{{mdView.current.record.resourceType[0]}} gn-padding-top"
+  data-ng-if="mdView.current.record.dataQualityVariable && mdView.current.record.dataQualityVariable.length"
+>
+  <div class="col-md-12 gn-record">
+    <h2>
+      <i class="fa fa-fw fa-flask"></i>
+      {{'dataProductVariables' | translate}}
+    </h2>
+    <div class="row gn-variable-list">
+      <div class="col-md-4" data-ng-repeat="variable in mdView.current.record.dataQualityVariable">
+        <div class="gn-variable-card">
+          <div class="gn-variable-name">{{variable.name}}</div>
+          <div class="gn-variable-measure" data-ng-repeat="measure in variable.measures">
+            <span
+              class="gn-variable-chip"
+              data-ng-class="{
+                'gn-chip-error': measure.type === 'error',
+                'gn-chip-precision': measure.type === 'precision',
+                'gn-chip-generic': !measure.type
+              }"
+            >
+              <span data-ng-switch="measure.type">
+                <span data-ng-switch-when="error" data-translate="">variableError</span>
+                <span data-ng-switch-when="precision" data-translate="">variablePrecision</span>
+                <span data-ng-switch-default>{{measure.label || ('measure' | translate)}}</span>
+              </span>
+            </span>
+
+            <div>
+              <span class="gn-variable-value">{{measure.value}}</span>
+              <span class="gn-variable-unit" data-ng-if="measure.unit">{{measure.unit}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- map & extent -->
 <div
   class="row gn-section gn-section-{{mdView.current.record.resourceType[0]}} gn-padding-top"

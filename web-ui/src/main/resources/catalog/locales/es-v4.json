@@ -406,5 +406,14 @@
   "lastCreatedRecords": "Last created records",
   "associationType": "Association type",
   "initiativeType": "Initiative type",
-  "associatedTo": "Associated "
+  "associatedTo": "Associated ",
+  "lineage": "Procedencia",
+  "processingSteps": "Pasos de procesamiento",
+  "processingStep": "Paso de procesamiento",
+  "softwareReference": "Referencia de software",
+  "dataProductVariables": "Variables del producto de datos",
+  "variableError": "Error",
+  "variablePrecision": "Precisión",
+  "gridResolution": "Resolución espacial",
+  "measure": "Medida"
 }

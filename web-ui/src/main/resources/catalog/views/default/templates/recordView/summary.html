@@ -36,6 +36,23 @@
   </div>
 
   <div
+    data-ng-show="mdView.current.record.resourceIdentifier"
+    class="gn-margin-bottom flex-row"
+  >
+    <span class="badge badge-rounded">
+      <i class="fa fa-fw fa-link"></i>
+    </span>
+    <div>
+      <h3 data-translate="">identifier</h3>
+      <ul class="gn-comma-list">
+        <li data-ng-repeat="id in mdView.current.record.resourceIdentifier">
+          <span data-ng-bind-html="id.code | linky"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div
     data-ng-show="mdView.current.record.resourceVerticalRange"
     class="gn-margin-bottom flex-row"
   >
