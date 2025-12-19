@@ -1085,7 +1085,9 @@
             </xsl:for-each>
           </xsl:variable>
 
-          <xsl:if test="$processParts/value">
+          <xsl:variable name="hasProcess" select="$processParts/value or $processSources/value"/>
+
+          <xsl:if test="$hasProcess">
             <lineageProcess type="object">{
               <xsl:value-of select="string-join($processParts/value, ',')"/>
               <xsl:if test="$processSources/value and $processParts/value">,</xsl:if>
