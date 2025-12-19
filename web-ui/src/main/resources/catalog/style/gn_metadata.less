@@ -750,3 +750,140 @@ ul.container-list {
     height: 100%;
   }
 }
+
+.gn-variable-list {
+  margin-top: 10px;
+
+  .gn-variable-card {
+    background: #f8f9fa;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    height: 100%;
+  }
+
+  .gn-variable-name {
+    font-weight: 700;
+    color: @brand-primary;
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  .gn-variable-measure {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+
+    .gn-variable-chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #fff;
+
+      &.gn-chip-error {
+        background: #d9534f;
+      }
+
+      &.gn-chip-precision {
+        background: #5bc0de;
+      }
+
+      &.gn-chip-accuracy {
+        background: #5cb85c;
+      }
+
+      &.gn-chip-generic {
+        background: #999;
+      }
+    }
+
+    .gn-variable-value {
+      font-weight: 600;
+    }
+
+    .gn-variable-unit {
+      color: @text-muted;
+      margin-left: 4px;
+    }
+  }
+}
+
+.gn-lineage-steps {
+  margin-top: 10px;
+
+  .gn-lineage-step {
+    border-left: 3px solid @brand-primary;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .gn-lineage-step-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .gn-lineage-step-title {
+    font-weight: 600;
+  }
+
+  .gn-lineage-step-detail {
+    color: @text-muted;
+  }
+
+  .gn-lineage-sources {
+    margin-top: 6px;
+
+    .gn-lineage-source-title {
+      font-weight: 600;
+      color: @brand-primary;
+      margin-bottom: 4px;
+    }
+
+    .gn-lineage-source {
+      padding: 6px 8px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .gn-lineage-source-desc {
+      font-weight: 600;
+    }
+
+    .gn-lineage-source-citation {
+      color: @text-color;
+    }
+
+    .gn-lineage-source-date {
+      color: @text-muted;
+      font-size: 12px;
+    }
+  }
+}
+
+.gn-grid-resolution {
+  .gn-grid-resolution-value {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .gn-grid-unit,
+  .gn-grid-geometry {
+    color: @text-muted;
+  }
+
+  .gn-grid-multiplier {
+    padding: 0 6px;
+    color: @text-muted;
+  }
+}

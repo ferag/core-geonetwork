@@ -57,6 +57,37 @@
 </div>
 
 <div
+  data-ng-if="mdView.current.record.gridSpatialRepresentation && mdView.current.record.gridSpatialRepresentation.length"
+  class="gn-margin-bottom flex-row gn-grid-resolution"
+>
+  <span class="badge badge-rounded">
+    <i class="fa fa-fw fa-th-large"></i>
+  </span>
+  <div>
+    <h3 data-translate="">gridResolution</h3>
+    <div
+      class="gn-grid-resolution-value"
+      data-ng-repeat="grid in mdView.current.record.gridSpatialRepresentation"
+    >
+      <div data-ng-if="grid.row || grid.column">
+        <span data-ng-if="grid.row">
+          <strong>{{grid.row.resolution}}</strong>
+          <span class="gn-grid-unit" data-ng-if="grid.row.unit">{{grid.row.unit}}</span>
+        </span>
+        <span data-ng-if="grid.row && grid.column" class="gn-grid-multiplier">×</span>
+        <span data-ng-if="grid.column">
+          <strong>{{grid.column.resolution}}</strong>
+          <span class="gn-grid-unit" data-ng-if="grid.column.unit">{{grid.column.unit}}</span>
+        </span>
+      </div>
+      <div class="gn-grid-geometry" data-ng-if="grid.cellGeometry">
+        {{grid.cellGeometry}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
   data-ng-if="mdView.current.record.crsDetails"
   class="gn-margin-bottom gn-md-side-crs flex-row"
 >

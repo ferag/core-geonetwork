@@ -1,6 +1,67 @@
-<div data-ng-if="mdView.current.record.lineage">
+<div
+  data-ng-if="mdView.current.record.lineage || (mdView.current.record.lineageProcess && mdView.current.record.lineageProcess.length)"
+  class="gn-lineage-section"
+>
   <h2 data-translate="">lineage</h2>
-  <p data-ng-bind-html="mdView.current.record.lineage | linky | newlines"></p>
+  <p
+    data-ng-if="mdView.current.record.lineage"
+    data-ng-bind-html="mdView.current.record.lineage | linky | newlines"
+  ></p>
+
+  <div
+    class="gn-lineage-steps"
+    data-ng-if="mdView.current.record.lineageProcess && mdView.current.record.lineageProcess.length"
+  >
+    <h3 data-translate="">processingSteps</h3>
+    <div class="gn-lineage-step" data-ng-repeat="process in mdView.current.record.lineageProcess">
+      <div class="gn-lineage-step-header">
+        <span class="badge badge-rounded">
+          <i class="fa fa-fw fa-cogs"></i>
+        </span>
+        <div>
+          <div class="gn-lineage-step-title">
+            {{process.description || ('processingStep' | translate)}}
+          </div>
+          <div class="gn-lineage-step-detail" data-ng-if="process.dateTime">
+            <i class="fa fa-clock-o"></i>
+            {{process.dateTime | date:'medium'}}
+          </div>
+          <div class="gn-lineage-step-detail" data-ng-if="process.softwareTitle || process.softwareIdentifier">
+            <span data-translate="">softwareReference</span>
+            <span data-ng-if="process.softwareTitle">{{process.softwareTitle}}</span>
+            <span
+              class="text-muted"
+              data-ng-if="process.softwareIdentifier"
+            >
+              ({{process.softwareIdentifier}})
+            </span>
+          </div>
+          <div class="gn-lineage-sources" data-ng-if="process.sources && process.sources.length">
+            <div class="gn-lineage-source-title">
+              <i class="fa fa-link"></i>
+              {{'processSources' | translate}}
+            </div>
+            <div class="gn-lineage-source" data-ng-repeat="source in process.sources">
+              <div class="gn-lineage-source-desc" data-ng-if="source.description">
+                {{source.description}}
+              </div>
+              <div class="gn-lineage-source-citation" data-ng-if="source.citationTitle || source.citationAltTitle">
+                <a data-ng-if="source.citationLink" ng-href="{{source.citationLink}}" target="_blank">
+                  <strong>{{source.citationTitle || source.citationLink}}</strong>
+                </a>
+                <strong data-ng-if="!source.citationLink">{{source.citationTitle}}</strong>
+                <span class="text-muted" data-ng-if="source.citationAltTitle">({{source.citationAltTitle}})</span>
+              </div>
+              <div class="gn-lineage-source-date" data-ng-if="source.citationDate">
+                <i class="fa fa-calendar"></i>
+                {{source.citationDate}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div data-ng-if="mdView.current.record.sourceDescription">
